@@ -1,0 +1,3 @@
+mutation SendLoginOTP($email: String!) {
+  sendLoginOTP(email: $email)
+}

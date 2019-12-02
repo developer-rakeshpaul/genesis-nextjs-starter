@@ -1,0 +1,15 @@
+#import "./fragments/user.fragment.gql"
+
+mutation LoginWithOTP($email: String!, $otp: String) {
+  loginWithOTP(email: $email, otp: $otp) {
+    user {
+      ...UserInfo
+    }
+  }
+}
+
+# Sample login input
+# {
+#     "email": "rakeshpaul@gmail.com",
+#     "otp": "265001"
+# }

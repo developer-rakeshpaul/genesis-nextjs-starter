@@ -1,0 +1,17 @@
+overwrite: true
+schema: 'http://localhost:4000/graphql'
+documents: 'gql/api/*.gql'
+generates:
+  lib/api-graphql.tsx:
+    hooks:
+      afterAllFileWrite:
+        - tslint --fix
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'

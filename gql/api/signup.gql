@@ -1,0 +1,9 @@
+# Write your query or mutation here
+
+#import "./fragments/user.fragment.gql"
+
+mutation Signup($data: UserCreateInput!) {
+  signup(userCreateInput: $data) {
+    ...UserInfo
+  }
+}

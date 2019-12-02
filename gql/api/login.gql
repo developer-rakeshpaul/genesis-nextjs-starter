@@ -1,0 +1,17 @@
+#import "./fragments/user.fragment.gql"
+
+# Write your query or mutation here
+mutation login($email: String!, $password: String) {
+  login(email: $email, password: $password) {
+    user {
+      ...UserInfo
+    }
+    token
+  }
+}
+
+# {
+#   "email": "sampleuser@x.com",
+#   "password": "password"
+# }
+#
