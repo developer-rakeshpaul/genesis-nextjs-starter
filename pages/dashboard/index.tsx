@@ -1,15 +1,32 @@
-import * as React from 'react'
-import { NextPage } from 'next'
 import Layout from 'layout/Layout'
-import { withApollo } from 'lib/withApollo'
-import getInitialProps from 'lib/withAuth'
+import { NextPage } from 'next'
+import * as React from 'react'
+import { withAuthSync } from 'lib/withAuthSync'
+import { useMeQuery } from 'lib/api-graphql'
 
-const dashboard: NextPage = () => (
-  <Layout title="Home | Genesis">
-    <div>hello from ui package</div>
-  </Layout>
-)
+const dashboard: NextPage = () => {
+  const { data, loading, error } = useMeQuery()
+  if (loading) {
+    return (
+      <Layout>
+        <div>loading...</div>
+      </Layout>
+    )
+  }
 
-dashboard.getInitialProps = getInitialProps
+  if (error) {
+    console.log(error)
+    return (
+      <Layout>
+        <div>err</div>
+      </Layout>
+    )
+  }
+  return (
+    <Layout title="Home | Genesis">
+      <div>{JSON.stringify(data, null, 2)}</div>
+    </Layout>
+  )
+}
 
-export default withApollo(dashboard)
+export default withAuthSync(dashboard)

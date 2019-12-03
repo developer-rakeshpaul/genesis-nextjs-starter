@@ -1,7 +1,10 @@
 import { useFormik } from 'formik'
+import { setAccessToken } from 'lib/accessToken'
 import { LoginMutationVariables, useLoginMutation } from 'lib/api-graphql'
+import get from 'lodash.get'
 import { NextPage } from 'next'
 import Link from 'next/link'
+import Router from 'next/router'
 import React from 'react'
 import * as Yup from 'yup'
 
@@ -11,12 +14,10 @@ import * as Yup from 'yup'
 interface LoginFormProps {
   email: string
   password: string
-  remember: boolean
 }
 const initialValues: LoginFormProps = {
   email: '',
-  password: '',
-  remember: false
+  password: ''
 }
 
 const LoginSchema = Yup.object().shape({
@@ -27,13 +28,23 @@ const LoginSchema = Yup.object().shape({
 })
 
 const Login: NextPage = () => {
-  const [login] = useLoginMutation()
+  const [loginMutation] = useLoginMutation()
+  const [error, setError] = React.useState(null)
 
   const onSubmit = async (variables: LoginMutationVariables) => {
-    const response = await login({
-      variables
-    })
-    console.log(response)
+    try {
+      const response = await loginMutation({
+        variables
+      })
+      const { token } = get(response, 'data.login', {})
+      if (token) {
+        setAccessToken(token)
+      }
+      Router.push('/')
+    } catch (e) {
+      console.error(e)
+      setError(e.message)
+    }
   }
 
   const formik = useFormik({
@@ -53,7 +64,7 @@ const Login: NextPage = () => {
           className="bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4"
         >
           <p className="mb-2 text-center text-red-500 text-xs italic">
-            {/* {error} */}
+            {error}
           </p>
           <div className="my-6">
             <input
@@ -85,7 +96,7 @@ const Login: NextPage = () => {
               </div>
             )}
           </div>
-          <div className="mb-2">
+          <div>
             <p className="block text-right">
               <Link href="/forgotpassword">
                 <a className="text-sm text-blue-600 hover:text-blue-800">
@@ -94,20 +105,7 @@ const Login: NextPage = () => {
               </Link>
             </p>
           </div>
-          <div className="mb-2">
-            <input
-              id="remember"
-              name="remember"
-              type="checkbox"
-              onChange={formik.handleChange}
-              checked={formik.values.remember}
-            />
-            <span className="mt-4 text-center text-gray-500 text-xs ml-2">
-              Remember me
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-4">
             <button
               className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
               type="submit"

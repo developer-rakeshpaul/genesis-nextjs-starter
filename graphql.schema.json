@@ -904,7 +904,7 @@
             "deprecationReason": null
           },
           {
-            "name": "jwtTokenExpiry",
+            "name": "tokenExpiry",
             "description": "",
             "args": [],
             "type": {

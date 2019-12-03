@@ -7,7 +7,7 @@ module.exports = withCSS({
     // Reference a variable that was defined in the .env file and make it available at Build Time
     API_HOST: process.env.API_HOST,
     API_PROTOCOL: process.env.API_PROTOCOL,
-    API_REFRESH_TOKEN_PATH: process.env.API_REFESH_TOKEN_PATH
+    API_REFRESH_TOKEN_PATH: process.env.API_REFRESH_TOKEN_PATH
   },
   webpack(config, options) {
     config.module.rules.push({
@@ -22,6 +22,7 @@ module.exports = withCSS({
     config.resolve.alias['interfaces'] = path.join(__dirname, 'interfaces')
     config.resolve.alias['layout'] = path.join(__dirname, 'layout')
     config.resolve.alias['lib'] = path.join(__dirname, 'lib')
+    config.resolve.alias['utils'] = path.join(__dirname, 'utils')
     return config
   }
 })

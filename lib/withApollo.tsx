@@ -2,7 +2,10 @@ import React from 'react'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { initApolloClient } from './initApollo'
-// import { NextContextWithApollo } from 'interfaces/withApolloContex'
+// import { setAccessToken, getAccessToken } from './accessToken'
+// import nextCookie from 'next-cookies'
+// import { getRefreshTokenUrl, isServer } from 'utils'
+import { NextContextWithApollo } from 'interfaces/withApolloContex'
 
 /**
  * Creates and provides the apolloContext
@@ -13,7 +16,15 @@ import { initApolloClient } from './initApollo'
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent: any, { ssr = true } = {}) {
-  const WithApollo = ({ apolloClient, apolloState, ...pageProps }: any) => {
+  const WithApollo = ({
+    apolloClient,
+    apolloState,
+    // serverAccessToken,
+    ...pageProps
+  }: any) => {
+    // if (!isServer && !getAccessToken()) {
+    //   setAccessToken(get(pageProps, 'pageProps.token'))
+    // }
     const client = React.useMemo(
       () => apolloClient || initApolloClient(apolloState),
       []
@@ -37,50 +48,59 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
     WithApollo.displayName = `withApollo(${displayName})`
   }
 
-  // Allow Next.js to remove getInitialProps from the browser build
-  if (typeof window === 'undefined') {
-    if (ssr) {
-      WithApollo.getInitialProps = async (ctx: any) => {
-        const { AppTree } = ctx
+  if (ssr || PageComponent.getInitialProps) {
+    WithApollo.getInitialProps = async (ctx: NextContextWithApollo) => {
+      const { AppTree, res } = ctx
 
-        // Run all GraphQL queries in the component tree
-        // and extract the resulting data
-        const apolloClient = initApolloClient()
-        ctx.apolloClient = apolloClient
+      // Run all GraphQL queries in the component tree
+      // and extract the resulting data
+      const apolloClient = (ctx.apolloClient = initApolloClient({}))
 
-        let pageProps = {}
+      const pageProps = PageComponent.getInitialProps
+        ? await PageComponent.getInitialProps(ctx)
+        : {}
 
-        if (PageComponent.getInitialProps) {
-          pageProps = await PageComponent.getInitialProps(ctx)
+      // Only on the server
+      if (typeof window === 'undefined') {
+        // When redirecting, the response is finished.
+        // No point in continuing to render
+        if (res && res.finished) {
+          return {}
         }
-        try {
-          // Run all GraphQL queries
-          await require('@apollo/react-ssr').getDataFromTree(
-            <AppTree
-              pageProps={{
-                ...pageProps,
-                apolloClient
-              }}
-            />
-          )
-        } catch (error) {
-          // Prevent Apollo Client GraphQL errors from crashing SSR.
-          // Handle them in components via the data.error prop:
-          // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-          console.error('Error while running `getDataFromTree`', error)
+
+        if (ssr) {
+          try {
+            // Run all GraphQL queries
+            const { getDataFromTree } = await import('@apollo/react-ssr')
+            await getDataFromTree(
+              <AppTree
+                pageProps={{
+                  ...pageProps,
+                  apolloClient
+                }}
+                apolloClient={apolloClient}
+              />
+            )
+          } catch (error) {
+            // Prevent Apollo Client GraphQL errors from crashing SSR.
+            // Handle them in components via the data.error prop:
+            // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
+            console.error('Error while running `getDataFromTree`', error)
+          }
         }
 
         // getDataFromTree does not call componentWillUnmount
         // head side effect therefore need to be cleared manually
         Head.rewind()
+      }
 
-        // Extract query data from the Apollo store
-        const apolloState = apolloClient.cache.extract()
+      // Extract query data from the Apollo store
+      const apolloState = apolloClient.cache.extract()
 
-        return {
-          ...pageProps,
-          apolloState
-        }
+      return {
+        ...pageProps,
+        apolloState
+        // serverAccessToken
       }
     }
   }

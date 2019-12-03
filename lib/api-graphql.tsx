@@ -20,7 +20,7 @@ export type Scalars = {
 export type AuthPayload = {
   __typename?: 'AuthPayload'
   token: Scalars['String']
-  jwtTokenExpiry: Scalars['DateTime']
+  tokenExpiry: Scalars['DateTime']
   user: User
 }
 
@@ -164,9 +164,10 @@ export type LoginMutationVariables = {
 }
 
 export type LoginMutation = { __typename?: 'Mutation' } & {
-  login: { __typename?: 'AuthPayload' } & Pick<AuthPayload, 'token'> & {
-      user: { __typename?: 'User' } & UserInfoFragment
-    }
+  login: { __typename?: 'AuthPayload' } & Pick<
+    AuthPayload,
+    'token' | 'tokenExpiry'
+  > & { user: { __typename?: 'User' } & UserInfoFragment }
 }
 
 export type LoginWithOtpMutationVariables = {
@@ -175,9 +176,10 @@ export type LoginWithOtpMutationVariables = {
 }
 
 export type LoginWithOtpMutation = { __typename?: 'Mutation' } & {
-  loginWithOTP: { __typename?: 'AuthPayload' } & {
-    user: { __typename?: 'User' } & UserInfoFragment
-  }
+  loginWithOTP: { __typename?: 'AuthPayload' } & Pick<
+    AuthPayload,
+    'token' | 'tokenExpiry'
+  > & { user: { __typename?: 'User' } & UserInfoFragment }
 }
 
 export type LogoutMutationVariables = {}
@@ -221,7 +223,7 @@ export type SignupMutation = { __typename?: 'Mutation' } & {
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
   User,
-  'id' | 'name' | 'email' | 'phone' | 'role' | 'lastLoginAt'
+  'id' | 'name' | 'email' | 'role' | 'lastLoginAt'
 >
 
 export const UserInfoFragmentDoc = gql`
@@ -229,7 +231,6 @@ export const UserInfoFragmentDoc = gql`
     id
     name
     email
-    phone
     role
     lastLoginAt
   }
@@ -424,6 +425,7 @@ export const LoginDocument = gql`
         ...UserInfo
       }
       token
+      tokenExpiry
     }
   }
   ${UserInfoFragmentDoc}
@@ -512,6 +514,8 @@ export const LoginWithOtpDocument = gql`
       user {
         ...UserInfo
       }
+      token
+      tokenExpiry
     }
   }
   ${UserInfoFragmentDoc}

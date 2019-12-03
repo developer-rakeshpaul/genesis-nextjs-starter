@@ -7,6 +7,7 @@ mutation login($email: String!, $password: String) {
       ...UserInfo
     }
     token
+    tokenExpiry
   }
 }
 

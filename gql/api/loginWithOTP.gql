@@ -5,6 +5,8 @@ mutation LoginWithOTP($email: String!, $otp: String) {
     user {
       ...UserInfo
     }
+    token
+    tokenExpiry
   }
 }
 

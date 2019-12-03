@@ -19,5 +19,8 @@
     "jsx-boolean-value": false,
     "no-implicit-dependencies": false
   },
-  "rulesDirectory": []
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["node_modules"]
+  }
 }

@@ -1,10 +1,10 @@
-import React from 'react'
-import App from 'next/app'
 import { withApollo } from 'lib/withApollo'
-import { NextContextWithApollo } from 'interfaces/withApolloContex'
+import { NextPageContext } from 'next'
+import App from 'next/app'
+import React from 'react'
 import '../styles/index.css'
 
-class Genesis extends App<NextContextWithApollo> {
+class Genesis extends App<NextPageContext> {
   render() {
     const { Component, pageProps } = this.props
     return <Component {...pageProps} />
