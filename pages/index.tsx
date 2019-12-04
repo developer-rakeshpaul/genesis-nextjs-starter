@@ -10,5 +10,4 @@ const index: NextPage = () => (
     </Link>
   </Layout>
 )
-
 export default index

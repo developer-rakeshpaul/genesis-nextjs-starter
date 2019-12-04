@@ -23,7 +23,7 @@ const dashboard: NextPage = () => {
     )
   }
   return (
-    <Layout title="Home | Genesis">
+    <Layout title="Dashboard | Genesis">
       <div>{JSON.stringify(data, null, 2)}</div>
     </Layout>
   )
