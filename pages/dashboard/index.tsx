@@ -4,12 +4,18 @@ import * as React from 'react'
 // import { useMeQuery } from 'lib/api-graphql'
 import { withAuthSync } from 'lib/withAuthSync'
 import { withAuthUser } from 'lib/withAuthUser'
+import { isServer } from 'utils'
+import Router from 'next/router'
 
-const dashboard: NextPage = (props: any) => {
-  console.log(props.user)
+const dashboard: NextPage = ({ user }: any) => {
+  React.useEffect(() => {
+    if (!user && !isServer) {
+      Router.push('/login')
+    }
+  }, [])
   return (
     <Layout title="Dashboard | Genesis">
-      <div>{JSON.stringify(props.user, null, 2)}</div>
+      {user && <div>{JSON.stringify(user, null, 2)}</div>}
     </Layout>
   )
 }

@@ -13,7 +13,12 @@ const Header: React.FunctionComponent = () => (
       </Link>
     </h1>
     <Link href="/login">
-      <a href="/login">Login</a>
+      <a
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-6 rounded-full"
+        href="/login"
+      >
+        Login
+      </a>
     </Link>
   </nav>
   // </header>
