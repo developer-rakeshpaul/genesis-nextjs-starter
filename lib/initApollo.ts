@@ -1,3 +1,4 @@
+import { isServer } from './../utils/index'
 import {
   ApolloClient,
   HttpLink,
@@ -15,20 +16,21 @@ import { getRefreshTokenUrl } from 'utils'
 import { getAccessToken, setAccessToken } from './accessToken'
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
-const isServer = typeof window !== 'undefined'
 
 /**
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState: any = {}) {
+function createApolloClient(
+  initialState: any = {},
+  serverAccessToken?: string
+) {
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ extensions }) => {
-        console.log(extensions)
-        if (extensions && extensions.code === 'invalid-jwt') {
+        if (extensions && extensions.code === 'UNAUTHENTICATED') {
           // logout()
         }
       })
@@ -74,7 +76,8 @@ function createApolloClient(initialState: any = {}) {
   })
 
   const authLink = setContext((_, { headers }) => {
-    const token = getAccessToken()
+    const token = isServer ? serverAccessToken : getAccessToken()
+    console.log(`setContext > isServer=${isServer} token=${!!token}`)
     return {
       headers: {
         ...headers,
@@ -109,7 +112,7 @@ function createApolloClient(initialState: any = {}) {
 
   const client = new ApolloClient({
     connectToDevTools: !isServer,
-    ssrMode: isServer, // Disables forceFetch on the server (so queries are only run once)
+    ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
     link: ApolloLink.from([refreshLink, authLink, errorLink, httpLink]),
 
     cache: new InMemoryCache().restore(initialState || {})
@@ -123,13 +126,13 @@ function createApolloClient(initialState: any = {}) {
  * @param  {Object} initialState
  */
 export function initApolloClient(
-  initialState: any = {}
-  // serverAccessToken?: string
+  initialState: any = {},
+  serverAccessToken?: string
 ) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === 'undefined') {
-    return createApolloClient(initialState)
+    return createApolloClient(initialState, serverAccessToken)
   }
 
   // Reuse client on the client-side

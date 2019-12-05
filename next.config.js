@@ -10,11 +10,6 @@ module.exports = withCSS({
     API_REFRESH_TOKEN_PATH: process.env.API_REFRESH_TOKEN_PATH
   },
   webpack(config, options) {
-    config.module.rules.push({
-      test: /\.(graphql|gql)$/,
-      exclude: /node_modules/,
-      loader: 'graphql-tag/loader'
-    })
     config.resolve.alias['components'] = path.join(__dirname, 'components')
     config.resolve.alias['gql'] = path.join(__dirname, 'gql')
     config.resolve.alias['hooks'] = path.join(__dirname, 'hooks')

@@ -1,6 +1,6 @@
-let accessToken: string | null = null
+let accessToken: string | null | undefined = null
 
-export const setAccessToken = (s: string | null) => {
+export const setAccessToken = (s: string | null | undefined) => {
   accessToken = s
 }
 
