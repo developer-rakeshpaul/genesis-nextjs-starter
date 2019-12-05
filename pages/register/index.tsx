@@ -8,7 +8,7 @@ import useRegisterForm from 'hooks/useRegisterForm'
 import Layout from 'layout/Layout'
 
 const Register = () => {
-  const { formik } = useRegisterForm({})
+  const { formik, error } = useRegisterForm({})
   return (
     <Layout title="Register | Genesis">
       <section className="h-full flex-col self-center justify-center items-center">
@@ -21,7 +21,7 @@ const Register = () => {
             onSubmit={formik.handleSubmit}
           >
             <p className="mb-2 text-center text-red-500 text-xs italic">
-              {/* {error} */}
+              {error}
             </p>
             <div className="my-6">
               <input
@@ -29,6 +29,8 @@ const Register = () => {
                 type="text"
                 name="name"
                 placeholder="ex. John Doe"
+                onChange={formik.handleChange}
+                value={formik.values.name}
               />
               {formik.touched.name && formik.errors.name && (
                 <div className="mt-1 text-red-500 text-xs italic">
@@ -42,6 +44,8 @@ const Register = () => {
                 type="email"
                 name="email"
                 placeholder="ex. johndoe@somemail.com"
+                onChange={formik.handleChange}
+                value={formik.values.email}
               />
               {formik.touched.email && formik.errors.email && (
                 <div className="mt-1 text-red-500 text-xs italic">
@@ -55,6 +59,8 @@ const Register = () => {
                 type="password"
                 name="password"
                 placeholder="Min. 6 characters"
+                onChange={formik.handleChange}
+                value={formik.values.password}
               />
               {formik.touched.password && formik.errors.password && (
                 <div className="mt-1 text-red-500 text-xs italic">

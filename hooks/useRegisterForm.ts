@@ -1,3 +1,4 @@
+import React from 'react'
 import { FormikValues, useFormik } from 'formik'
 import * as Yup from 'yup'
 
@@ -33,14 +34,16 @@ function useRegisterForm<T extends FormikValues>({
   initialValues = defaultInitialValues,
   validationSchema = DefaultRegisterSchema
 }: T) {
+  const [error, setError] = React.useState()
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2))
+      console.log(JSON.stringify(values, null, 2))
+      setError('some error occured')
     }
   })
-  return { formik }
+  return { formik, error }
 }
 
 export default useRegisterForm
