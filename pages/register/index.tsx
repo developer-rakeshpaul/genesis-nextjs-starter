@@ -4,7 +4,7 @@ import Link from 'next/link'
 // import redirect from '../lib/redirect'
 // import checkLoggedIn from '../lib/checkLoggedIn'
 
-import useRegisterForm from 'components/RegisterForm'
+import useRegisterForm from 'hooks/useRegisterForm'
 import Layout from 'layout/Layout'
 
 const Register = () => {
