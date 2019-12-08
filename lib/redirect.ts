@@ -1,7 +1,8 @@
 import Router from 'next/router'
+import { isServer } from './../utils/index'
 
 export default (context: any, target: string) => {
-  if (typeof window === 'undefined') {
+  if (isServer) {
     // server
     // 303: "See other"
     context.res.writeHead(303, { Location: target })

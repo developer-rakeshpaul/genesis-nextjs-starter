@@ -3,6 +3,8 @@ import Router from 'next/router'
 import React from 'react'
 import { getRefreshTokenUrl, isServer } from 'utils'
 import { getAccessToken, setAccessToken } from './accessToken'
+import { getAuthUser } from './withAuthUser'
+import redirect from './redirect'
 
 function login(token: string, noRedirect: boolean) {
   setAccessToken(token)
@@ -54,6 +56,17 @@ export const withAuthSync = (PageComponent: any) => {
     WithAuthSync.displayName = `withAuthSync(${displayName})`
   }
 
+  WithAuthSync.getInitialProps = async (ctx: any) => {
+    const user = await getAuthUser(ctx.apolloClient)
+    if (!user) {
+      redirect(ctx, '/login')
+    }
+    const componentProps =
+      PageComponent.getInitialProps &&
+      (await PageComponent.getInitialProps(ctx))
+
+    return { ...componentProps, user }
+  }
   return WithAuthSync
 }
 

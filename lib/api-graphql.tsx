@@ -1,11 +1,7 @@
 import gql from 'graphql-tag'
 import * as ApolloReactCommon from '@apollo/react-common'
-import * as React from 'react'
-import * as ApolloReactComponents from '@apollo/react-components'
-import * as ApolloReactHoc from '@apollo/react-hoc'
 import * as ApolloReactHooks from '@apollo/react-hooks'
 export type Maybe<T> = T | null
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -244,50 +240,6 @@ export type ChangePasswordMutationFn = ApolloReactCommon.MutationFunction<
   ChangePasswordMutation,
   ChangePasswordMutationVariables
 >
-export type ChangePasswordComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables
-  >,
-  'mutation'
->
-
-export const ChangePasswordComponent = (
-  props: ChangePasswordComponentProps
-) => (
-  <ApolloReactComponents.Mutation<
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables
-  >
-    mutation={ChangePasswordDocument}
-    {...props}
-  />
-)
-
-export type ChangePasswordProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<
-      ChangePasswordMutation,
-      ChangePasswordMutationVariables
-    >
-  | TChildProps
-export function withChangePassword<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables,
-    ChangePasswordProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    ChangePasswordMutation,
-    ChangePasswordMutationVariables,
-    ChangePasswordProps<TChildProps>
-  >(ChangePasswordDocument, {
-    alias: 'changePassword',
-    ...operationOptions
-  })
-}
 
 /**
  * __useChangePasswordMutation__
@@ -337,48 +289,6 @@ export type ConfirmUserMutationFn = ApolloReactCommon.MutationFunction<
   ConfirmUserMutation,
   ConfirmUserMutationVariables
 >
-export type ConfirmUserComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    ConfirmUserMutation,
-    ConfirmUserMutationVariables
-  >,
-  'mutation'
->
-
-export const ConfirmUserComponent = (props: ConfirmUserComponentProps) => (
-  <ApolloReactComponents.Mutation<
-    ConfirmUserMutation,
-    ConfirmUserMutationVariables
-  >
-    mutation={ConfirmUserDocument}
-    {...props}
-  />
-)
-
-export type ConfirmUserProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<
-      ConfirmUserMutation,
-      ConfirmUserMutationVariables
-    >
-  | TChildProps
-export function withConfirmUser<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    ConfirmUserMutation,
-    ConfirmUserMutationVariables,
-    ConfirmUserProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    ConfirmUserMutation,
-    ConfirmUserMutationVariables,
-    ConfirmUserProps<TChildProps>
-  >(ConfirmUserDocument, {
-    alias: 'confirmUser',
-    ...operationOptions
-  })
-}
 
 /**
  * __useConfirmUserMutation__
@@ -434,42 +344,6 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<
   LoginMutation,
   LoginMutationVariables
 >
-export type LoginComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    LoginMutation,
-    LoginMutationVariables
-  >,
-  'mutation'
->
-
-export const LoginComponent = (props: LoginComponentProps) => (
-  <ApolloReactComponents.Mutation<LoginMutation, LoginMutationVariables>
-    mutation={LoginDocument}
-    {...props}
-  />
-)
-
-export type LoginProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<LoginMutation, LoginMutationVariables>
-  | TChildProps
-export function withLogin<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    LoginMutation,
-    LoginMutationVariables,
-    LoginProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    LoginMutation,
-    LoginMutationVariables,
-    LoginProps<TChildProps>
-  >(LoginDocument, {
-    alias: 'login',
-    ...operationOptions
-  })
-}
 
 /**
  * __useLoginMutation__
@@ -524,48 +398,6 @@ export type LoginWithOtpMutationFn = ApolloReactCommon.MutationFunction<
   LoginWithOtpMutation,
   LoginWithOtpMutationVariables
 >
-export type LoginWithOtpComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    LoginWithOtpMutation,
-    LoginWithOtpMutationVariables
-  >,
-  'mutation'
->
-
-export const LoginWithOtpComponent = (props: LoginWithOtpComponentProps) => (
-  <ApolloReactComponents.Mutation<
-    LoginWithOtpMutation,
-    LoginWithOtpMutationVariables
-  >
-    mutation={LoginWithOtpDocument}
-    {...props}
-  />
-)
-
-export type LoginWithOtpProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<
-      LoginWithOtpMutation,
-      LoginWithOtpMutationVariables
-    >
-  | TChildProps
-export function withLoginWithOtp<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    LoginWithOtpMutation,
-    LoginWithOtpMutationVariables,
-    LoginWithOtpProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    LoginWithOtpMutation,
-    LoginWithOtpMutationVariables,
-    LoginWithOtpProps<TChildProps>
-  >(LoginWithOtpDocument, {
-    alias: 'loginWithOtp',
-    ...operationOptions
-  })
-}
 
 /**
  * __useLoginWithOtpMutation__
@@ -615,42 +447,6 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
   LogoutMutation,
   LogoutMutationVariables
 >
-export type LogoutComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    LogoutMutation,
-    LogoutMutationVariables
-  >,
-  'mutation'
->
-
-export const LogoutComponent = (props: LogoutComponentProps) => (
-  <ApolloReactComponents.Mutation<LogoutMutation, LogoutMutationVariables>
-    mutation={LogoutDocument}
-    {...props}
-  />
-)
-
-export type LogoutProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<LogoutMutation, LogoutMutationVariables>
-  | TChildProps
-export function withLogout<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    LogoutMutation,
-    LogoutMutationVariables,
-    LogoutProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    LogoutMutation,
-    LogoutMutationVariables,
-    LogoutProps<TChildProps>
-  >(LogoutDocument, {
-    alias: 'logout',
-    ...operationOptions
-  })
-}
 
 /**
  * __useLogoutMutation__
@@ -696,39 +492,6 @@ export const MeDocument = gql`
     }
   }
 `
-export type MeComponentProps = Omit<
-  ApolloReactComponents.QueryComponentOptions<MeQuery, MeQueryVariables>,
-  'query'
->
-
-export const MeComponent = (props: MeComponentProps) => (
-  <ApolloReactComponents.Query<MeQuery, MeQueryVariables>
-    query={MeDocument}
-    {...props}
-  />
-)
-
-export type MeProps<TChildProps = {}> =
-  | ApolloReactHoc.DataProps<MeQuery, MeQueryVariables>
-  | TChildProps
-export function withMe<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    MeQuery,
-    MeQueryVariables,
-    MeProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withQuery<
-    TProps,
-    MeQuery,
-    MeQueryVariables,
-    MeProps<TChildProps>
-  >(MeDocument, {
-    alias: 'me',
-    ...operationOptions
-  })
-}
 
 /**
  * __useMeQuery__
@@ -776,50 +539,6 @@ export type ResendConfirmEmailMutationFn = ApolloReactCommon.MutationFunction<
   ResendConfirmEmailMutation,
   ResendConfirmEmailMutationVariables
 >
-export type ResendConfirmEmailComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    ResendConfirmEmailMutation,
-    ResendConfirmEmailMutationVariables
-  >,
-  'mutation'
->
-
-export const ResendConfirmEmailComponent = (
-  props: ResendConfirmEmailComponentProps
-) => (
-  <ApolloReactComponents.Mutation<
-    ResendConfirmEmailMutation,
-    ResendConfirmEmailMutationVariables
-  >
-    mutation={ResendConfirmEmailDocument}
-    {...props}
-  />
-)
-
-export type ResendConfirmEmailProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<
-      ResendConfirmEmailMutation,
-      ResendConfirmEmailMutationVariables
-    >
-  | TChildProps
-export function withResendConfirmEmail<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    ResendConfirmEmailMutation,
-    ResendConfirmEmailMutationVariables,
-    ResendConfirmEmailProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    ResendConfirmEmailMutation,
-    ResendConfirmEmailMutationVariables,
-    ResendConfirmEmailProps<TChildProps>
-  >(ResendConfirmEmailDocument, {
-    alias: 'resendConfirmEmail',
-    ...operationOptions
-  })
-}
 
 /**
  * __useResendConfirmEmailMutation__
@@ -868,48 +587,6 @@ export type SendLoginOtpMutationFn = ApolloReactCommon.MutationFunction<
   SendLoginOtpMutation,
   SendLoginOtpMutationVariables
 >
-export type SendLoginOtpComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    SendLoginOtpMutation,
-    SendLoginOtpMutationVariables
-  >,
-  'mutation'
->
-
-export const SendLoginOtpComponent = (props: SendLoginOtpComponentProps) => (
-  <ApolloReactComponents.Mutation<
-    SendLoginOtpMutation,
-    SendLoginOtpMutationVariables
-  >
-    mutation={SendLoginOtpDocument}
-    {...props}
-  />
-)
-
-export type SendLoginOtpProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<
-      SendLoginOtpMutation,
-      SendLoginOtpMutationVariables
-    >
-  | TChildProps
-export function withSendLoginOtp<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    SendLoginOtpMutation,
-    SendLoginOtpMutationVariables,
-    SendLoginOtpProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    SendLoginOtpMutation,
-    SendLoginOtpMutationVariables,
-    SendLoginOtpProps<TChildProps>
-  >(SendLoginOtpDocument, {
-    alias: 'sendLoginOtp',
-    ...operationOptions
-  })
-}
 
 /**
  * __useSendLoginOtpMutation__
@@ -961,42 +638,6 @@ export type SignupMutationFn = ApolloReactCommon.MutationFunction<
   SignupMutation,
   SignupMutationVariables
 >
-export type SignupComponentProps = Omit<
-  ApolloReactComponents.MutationComponentOptions<
-    SignupMutation,
-    SignupMutationVariables
-  >,
-  'mutation'
->
-
-export const SignupComponent = (props: SignupComponentProps) => (
-  <ApolloReactComponents.Mutation<SignupMutation, SignupMutationVariables>
-    mutation={SignupDocument}
-    {...props}
-  />
-)
-
-export type SignupProps<TChildProps = {}> =
-  | ApolloReactHoc.MutateProps<SignupMutation, SignupMutationVariables>
-  | TChildProps
-export function withSignup<TProps, TChildProps = {}>(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    SignupMutation,
-    SignupMutationVariables,
-    SignupProps<TChildProps>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    SignupMutation,
-    SignupMutationVariables,
-    SignupProps<TChildProps>
-  >(SignupDocument, {
-    alias: 'signup',
-    ...operationOptions
-  })
-}
 
 /**
  * __useSignupMutation__

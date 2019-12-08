@@ -1,14 +1,26 @@
 import React from 'react'
 import Link from 'next/link'
 
-// import redirect from '../lib/redirect'
-// import checkLoggedIn from '../lib/checkLoggedIn'
-
 import useRegisterForm from 'hooks/useRegisterForm'
 import Layout from 'layout/Layout'
+import { useSignupMutation } from 'lib/api-graphql'
 
 const Register = () => {
-  const { formik, error } = useRegisterForm({})
+  const { formik } = useRegisterForm({
+    onSubmit: async (data: any): Promise<void> => {
+      try {
+        await signupMutation({ variables: { data } })
+      } catch (error) {
+        console.error('register', error)
+      }
+    }
+  })
+  const [
+    signupMutation,
+    { data: response, loading, error }
+  ] = useSignupMutation()
+
+  console.log(JSON.stringify({ response, error }, null, 2))
   return (
     <Layout title="Register | Genesis">
       <section className="h-full flex-col self-center justify-center items-center">
@@ -21,7 +33,7 @@ const Register = () => {
             onSubmit={formik.handleSubmit}
           >
             <p className="mb-2 text-center text-red-500 text-xs italic">
-              {error}
+              {/* {error} */}
             </p>
             <div className="my-6">
               <input
@@ -84,7 +96,7 @@ const Register = () => {
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
                 type="submit"
-                disabled={formik.isSubmitting}
+                disabled={formik.isSubmitting || loading}
               >
                 Create Your Account
               </button>
