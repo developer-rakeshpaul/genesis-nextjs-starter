@@ -108,7 +108,7 @@ const Login: NextPage = ({ user }: any) => {
                 <div>
                   <p className="block text-right">
                     <Link href="/forgot-password">
-                      <a className="text-sm text-blue-600 hover:text-blue-800">
+                      <a className="text-sm text-blue-700 hover:text-blue-500">
                         Forgot Password?
                       </a>
                     </Link>
@@ -144,9 +144,12 @@ const Login: NextPage = ({ user }: any) => {
               </div>
             </div>
             <p className="mt-4 text-center text-gray-500 text-xs">
-              Not yet a member?
+              Not a member yet?
               <Link href="/register">
-                <a href="/register" className="ml-2 text-blue-600">
+                <a
+                  href="/register"
+                  className="ml-2 text-blue-700 hover:text-blue-500"
+                >
                   Create account
                 </a>
               </Link>

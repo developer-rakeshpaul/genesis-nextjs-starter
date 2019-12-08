@@ -43,7 +43,7 @@ const LoginForm: React.FunctionComponent<{
           render={({ form }: FieldProps<LoginFormProps>) => (
             <div className="my-6">
               {/* <input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none'
+                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='email'
                 {...field}
                 placeholder='ex. johndoe@somemail.com'
@@ -61,7 +61,7 @@ const LoginForm: React.FunctionComponent<{
           render={({ form }: FieldProps<LoginFormProps>) => (
             <div className="mb-2">
               {/* <input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none'
+                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='password'
                 {...field}
                 placeholder='Min. 6 characters'

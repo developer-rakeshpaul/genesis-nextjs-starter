@@ -37,7 +37,7 @@ const Register = () => {
             </p>
             <div className="my-6">
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                className="appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500"
                 type="email"
                 name="email"
                 placeholder="ex. johndoe@somemail.com"
@@ -61,8 +61,9 @@ const Register = () => {
             </div>
           </form>
           <p className="mt-4 text-center text-gray-500 text-xs">
+            Remember your password?
             <Link href="/login">
-              <a className="text-blue-600">Sign In</a>
+              <a className="ml-2 text-blue-700 hover:text-blue-500">Sign In</a>
             </Link>
           </p>
         </div>

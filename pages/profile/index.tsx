@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 
 import useRegisterForm from 'hooks/useRegisterForm'
 import Layout from 'layout/Layout'
@@ -26,7 +25,7 @@ const Register = () => {
       <section className="h-full flex-col self-center justify-center items-center">
         <div className="w-full max-w-sm mx-auto">
           <h1 className="text-lg font-bold my-3 text-center text-gray-600">
-            Create an account
+            Profile
           </h1>
           <form
             className="bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4"
@@ -65,12 +64,12 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className="mb-2">
+            <div className="my-6">
               <input
                 className="appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500"
                 type="password"
                 name="password"
-                placeholder="Min. 6 characters"
+                placeholder="New Password"
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
@@ -81,20 +80,19 @@ const Register = () => {
               )}
             </div>
             <div className="my-6">
-              <p className="text-xs">
-                By clicking "Create your account" below, you agree to our
-                <Link href="/termsofservice">
-                  <span className="mx-1 text-blue-700 hover:text-blue-500">
-                    terms of service
-                  </span>
-                </Link>
-                <span>and</span>
-                <Link href="/privacypolicy">
-                  <span className="ml-1 text-blue-700 hover:text-blue-500">
-                    privacy policy
-                  </span>
-                </Link>
-              </p>
+              <input
+                className="appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500"
+                type="password"
+                name="password"
+                placeholder="Confirm Password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <div className="mt-1 text-red-500 text-xs italic">
+                  {formik.errors.password}
+                </div>
+              )}
             </div>
             <div className="mt-4 flex items-center justify-between">
               <button
@@ -102,16 +100,10 @@ const Register = () => {
                 type="submit"
                 disabled={formik.isSubmitting || loading}
               >
-                Create Your Account
+                Update
               </button>
             </div>
           </form>
-          <p className="mt-4 text-center text-gray-500 text-xs">
-            Already have an account?
-            <Link href="/login">
-              <a className="text-blue-700 hover:text-blue-500 ml-2">Sign In</a>
-            </Link>
-          </p>
         </div>
       </section>
     </Layout>
