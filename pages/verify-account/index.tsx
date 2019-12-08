@@ -1,7 +1,6 @@
 import Layout from 'layout/Layout'
 import { NextPage } from 'next'
 import * as React from 'react'
-import Link from 'next/link'
 
 const index: NextPage = () => (
   <Layout title="Home | Genesis">
@@ -11,14 +10,8 @@ const index: NextPage = () => (
           className="text-blue-700 text-2xl font-normal leading-loose"
           role="alert"
         >
-          <i className="lni-thought text-4xl mr-2 leading-loose" />
-          You have landed on the
-          <Link href="/dashboard">
-            <a href="/dashboard" className="text-blue-900">
-              {' '}
-              dashboard
-            </a>
-          </Link>
+          <i className="lni-thumbs-up text-4xl mr-2 leading-loose" />
+          Your account has been sucessfully verified.
         </div>
       </div>
     </section>

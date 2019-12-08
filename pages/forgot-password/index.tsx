@@ -26,7 +26,7 @@ const Register = () => {
       <section className="h-full flex-col self-center justify-center items-center">
         <div className="w-full max-w-sm mx-auto">
           <h1 className="text-lg font-bold my-3 text-center text-gray-600">
-            Create an account
+            Forgot Password
           </h1>
           <form
             className="bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4"
@@ -35,21 +35,6 @@ const Register = () => {
             <p className="mb-2 text-center text-red-500 text-xs italic">
               {/* {error} */}
             </p>
-            <div className="my-6">
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-                type="text"
-                name="name"
-                placeholder="ex. John Doe"
-                onChange={formik.handleChange}
-                value={formik.values.name}
-              />
-              {formik.touched.name && formik.errors.name && (
-                <div className="mt-1 text-red-500 text-xs italic">
-                  {formik.errors.name}
-                </div>
-              )}
-            </div>
             <div className="my-6">
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
@@ -65,47 +50,19 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className="mb-2">
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-                type="password"
-                name="password"
-                placeholder="Min. 6 characters"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
-              {formik.touched.password && formik.errors.password && (
-                <div className="mt-1 text-red-500 text-xs italic">
-                  {formik.errors.password}
-                </div>
-              )}
-            </div>
-            <div className="my-6">
-              <p className="text-xs">
-                By clicking "Create your account" below, you agree to our
-                <Link href="/termsofservice">
-                  <span className="text-blue-600"> terms of service </span>
-                </Link>
-                <span>and</span>
-                <Link href="/privacypolicy">
-                  <span className="text-blue-600"> privacy policy</span>
-                </Link>
-              </p>
-            </div>{' '}
             <div className="mt-4 flex items-center justify-between">
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
                 type="submit"
                 disabled={formik.isSubmitting || loading}
               >
-                Create Your Account
+                Reset Password
               </button>
             </div>
           </form>
           <p className="mt-4 text-center text-gray-500 text-xs">
-            Already have an account?
             <Link href="/login">
-              <a className="ml-2 text-blue-600">Sign In</a>
+              <a className="text-blue-600">Sign In</a>
             </Link>
           </p>
         </div>
