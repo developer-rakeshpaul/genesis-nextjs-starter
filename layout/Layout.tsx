@@ -27,7 +27,7 @@ const Layout: React.FunctionComponent<Props> = ({
       />
     </Head>
     <Header />
-    <div className="block">{children}</div>
+    <div className="block mb-4">{children}</div>
     <Footer />
   </div>
 )
