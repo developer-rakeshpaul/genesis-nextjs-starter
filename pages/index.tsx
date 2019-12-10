@@ -1,7 +1,7 @@
-import Layout from 'layout/Layout'
+import React from 'react'
 import { NextPage } from 'next'
-import * as React from 'react'
 import Link from 'next/link'
+import Layout from 'layout/Layout'
 
 const index: NextPage = () => (
   <Layout title='Home | Genesis'>
