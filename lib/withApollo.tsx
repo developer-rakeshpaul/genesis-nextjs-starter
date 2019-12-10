@@ -5,6 +5,7 @@ import React from 'react'
 import { getRefreshTokenUrl } from 'utils'
 import { getAccessToken, setAccessToken } from './accessToken'
 import { initApolloClient } from './initApollo'
+import { ApolloProvider } from '@apollo/react-hoc'
 
 const isServer = () => typeof window === 'undefined'
 
@@ -17,37 +18,38 @@ const isServer = () => typeof window === 'undefined'
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent: any, { ssr = true } = {}) {
-  console.log('Inside withApollo')
   const WithApollo = ({
     apolloClient,
-    serverAccessToken,
     apolloState,
+    serverAccessToken,
     ...pageProps
   }: any) => {
     if (!isServer() && !getAccessToken()) {
       setAccessToken(serverAccessToken)
     }
     const client = apolloClient || initApolloClient(apolloState)
-    return <PageComponent {...pageProps} apolloClient={client} />
+    return (
+      <ApolloProvider client={client}>
+        <PageComponent {...pageProps} />
+      </ApolloProvider>
+    )
   }
 
+  // Set the correct displayName in development
   if (process.env.NODE_ENV !== 'production') {
-    // Find correct display name
     const displayName =
       PageComponent.displayName || PageComponent.name || 'Component'
 
-    // Warn if old way of installing apollo is used
     if (displayName === 'App') {
       console.warn('This withApollo HOC only works with PageComponents.')
     }
 
-    // Set correct display name for devtools
     WithApollo.displayName = `withApollo(${displayName})`
   }
 
   if (ssr || PageComponent.getInitialProps) {
-    WithApollo.getInitialProps = async (context: any) => {
-      const { AppTree, ctx } = context
+    WithApollo.getInitialProps = async (ctx: any) => {
+      const { AppTree } = ctx
 
       let serverAccessToken = ''
 
@@ -65,27 +67,29 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
           serverAccessToken = data.token
         }
       }
-
-      // Run all GraphQL queries in the component tree
-      // and extract the resulting data
-      // tslint:disable-next-line:no-shadowed-variable
-      const apolloClient = (context.ctx.apolloClient = initApolloClient(
+      // Initialize ApolloClient, add it to the ctx object so
+      // we can use it in `PageComponent.getInitialProp`.
+      // eslint-disable-next-line require-atomic-updates
+      const apolloClient = (ctx.apolloClient = initApolloClient(
         {},
         serverAccessToken
       ))
 
-      const pageProps = PageComponent.getInitialProps
-        ? await PageComponent.getInitialProps(context)
-        : {}
+      // Run wrapped getInitialProps methods
+      let pageProps = {}
+      if (PageComponent.getInitialProps) {
+        pageProps = await PageComponent.getInitialProps(ctx)
+      }
 
-      // Only on the server
+      // Only on the server:
       if (typeof window === 'undefined') {
         // When redirecting, the response is finished.
         // No point in continuing to render
         if (ctx.res && ctx.res.finished) {
-          return {}
+          return pageProps
         }
 
+        // Only if ssr is enabled
         if (ssr) {
           try {
             // Run all GraphQL queries
@@ -96,20 +100,19 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
                   ...pageProps,
                   apolloClient
                 }}
-                apolloClient={apolloClient}
               />
             )
           } catch (error) {
             // Prevent Apollo Client GraphQL errors from crashing SSR.
             // Handle them in components via the data.error prop:
             // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-            // console.error('Error while running `getDataFromTree`', error);
+            console.error('Error while running `getDataFromTree`', error)
           }
-        }
 
-        // getDataFromTree does not call componentWillUnmount
-        // head side effect therefore need to be cleared manually
-        Head.rewind()
+          // getDataFromTree does not call componentWillUnmount
+          // head side effect therefore need to be cleared manually
+          Head.rewind()
+        }
       }
 
       // Extract query data from the Apollo store
