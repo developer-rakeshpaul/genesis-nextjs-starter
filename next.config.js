@@ -16,6 +16,7 @@ module.exports = withCSS({
     config.resolve.alias['interfaces'] = path.join(__dirname, 'interfaces')
     config.resolve.alias['layout'] = path.join(__dirname, 'layout')
     config.resolve.alias['lib'] = path.join(__dirname, 'lib')
+    config.resolve.alias['store'] = path.join(__dirname, 'store')
     config.resolve.alias['utils'] = path.join(__dirname, 'utils')
     return config
   }

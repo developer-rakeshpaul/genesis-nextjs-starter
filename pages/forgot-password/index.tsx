@@ -1,12 +1,12 @@
-import React from 'react'
+import { NextPage } from 'next'
 import Link from 'next/link'
-
+import React from 'react'
+import { LoadingButton } from 'components/button'
 import useRegisterForm from 'hooks/useRegisterForm'
-import Layout from 'layout/Layout'
 import { useSignupMutation } from 'lib/api-graphql'
 import { withApollo } from 'lib/withApollo'
-import { NextPage } from 'next'
-import { LoadingButton } from 'components/button'
+import Layout from 'layout/Layout'
+import { withAuthUser } from 'lib/withAuthUser'
 
 const ForgotPassword: NextPage = () => {
   const [
@@ -25,7 +25,7 @@ const ForgotPassword: NextPage = () => {
 
   console.log(JSON.stringify({ response, error }, null, 2))
   return (
-    <Layout title='Register | Genesis'>
+    <Layout title='Forgot Password | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
         <div className='w-full max-w-sm mx-auto'>
           <h1 className='text-lg font-bold my-3 text-center text-gray-600'>
@@ -75,4 +75,4 @@ const ForgotPassword: NextPage = () => {
   )
 }
 
-export default withApollo(ForgotPassword)
+export default withApollo(withAuthUser(ForgotPassword))

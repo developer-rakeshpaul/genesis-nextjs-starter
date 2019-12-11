@@ -2,12 +2,10 @@ import nextCookie from 'next-cookies'
 import fetch from 'isomorphic-unfetch'
 import Head from 'next/head'
 import React from 'react'
-import { getRefreshTokenUrl } from 'utils'
+import { getRefreshTokenUrl, isServer } from 'utils'
 import { getAccessToken, setAccessToken } from './accessToken'
 import { initApolloClient } from './initApollo'
 import { ApolloProvider } from '@apollo/react-hoc'
-
-const isServer = () => typeof window === 'undefined'
 
 /**
  * Creates and provides the apolloContext
@@ -18,13 +16,15 @@ const isServer = () => typeof window === 'undefined'
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent: any, { ssr = true } = {}) {
+  console.log('Inside withApollo HOC', new Date())
   const WithApollo = ({
     apolloClient,
     apolloState,
     serverAccessToken,
     ...pageProps
   }: any) => {
-    if (!isServer() && !getAccessToken()) {
+    console.log('Inside WithApollo component', new Date())
+    if (!isServer && !getAccessToken()) {
       setAccessToken(serverAccessToken)
     }
     const client = apolloClient || initApolloClient(apolloState)
@@ -49,11 +49,12 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
   if (ssr || PageComponent.getInitialProps) {
     WithApollo.getInitialProps = async (ctx: any) => {
+      console.log('inside WithApolloComponent getInitial Props', new Date())
       const { AppTree } = ctx
 
       let serverAccessToken = ''
 
-      if (isServer()) {
+      if (isServer) {
         const { gid } = nextCookie(ctx)
         if (gid) {
           const response = await fetch(getRefreshTokenUrl(), {

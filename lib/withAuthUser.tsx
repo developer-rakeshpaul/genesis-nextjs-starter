@@ -1,36 +1,16 @@
-// import { useMeQuery } from './api-graphql'
 import React from 'react'
-// import { useMeQuery } from './api-graphql'
-import { MeQuery } from './api-graphql'
-import { ApolloClient, NormalizedCacheObject, gql } from 'apollo-boost'
-import get from 'lodash.get'
-
-const me = gql`
-  query Me {
-    me {
-      id
-      name
-      email
-    }
-  }
-`
-const getAuthUser = async (
-  apolloClient: ApolloClient<NormalizedCacheObject>
-) => {
-  try {
-    const response = await apolloClient.query<MeQuery>({
-      query: me,
-      context: { clientName: 'api' }
-    })
-    return get(response, 'data.me', null)
-  } catch (error) {
-    return null
-  }
-}
+import { authenticate } from './auth'
+import { isServer } from 'utils'
+import { redirectTo } from './redirect'
 
 const withAuthUser = (Page: any) => {
-  console.log('Inside withAuthUser')
-  const WithAuthUser = (props: any) => <Page {...props} />
+  console.log('inside withAuthUser')
+  const WithAuthUser = (props: any) => {
+    if (!isServer) {
+      console.log('WithAuthUser props: ', props.user)
+    }
+    return <Page {...props} />
+  }
 
   // Set the correct displayName in development
   if (process.env.NODE_ENV !== 'production') {
@@ -44,13 +24,20 @@ const withAuthUser = (Page: any) => {
   }
 
   WithAuthUser.getInitialProps = async (ctx: any) => {
-    const user = await getAuthUser(ctx.apolloClient)
+    console.log('inside withAuthUser getInitialProps')
+    const { token, user } = (await authenticate(ctx)) || {}
+
+    console.log('WithAuthUser.getInitialProps: ', user)
+    const redirectPaths = ['/login', '/forgot-password', '/reset-password']
+    if (user && redirectPaths.includes(ctx.pathname)) {
+      redirectTo('/dashboard', { res: ctx.res, status: 301 })
+    }
     const componentProps =
       Page.getInitialProps && (await Page.getInitialProps(ctx))
 
-    return { ...componentProps, user }
+    return { ...componentProps, token, user }
   }
   return WithAuthUser
 }
 
-export { getAuthUser, withAuthUser }
+export { withAuthUser }

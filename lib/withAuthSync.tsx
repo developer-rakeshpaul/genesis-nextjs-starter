@@ -1,10 +1,10 @@
-import nextCookie from 'next-cookies'
 import Router from 'next/router'
 import React from 'react'
-import { getRefreshTokenUrl, isServer } from 'utils'
-import { getAccessToken, setAccessToken } from './accessToken'
-import { getAuthUser } from './withAuthUser'
-import redirect from './redirect'
+import { setAccessToken } from './accessToken'
+import { isServer } from 'utils'
+import { redirectTo } from './redirect'
+import { authenticate } from './auth'
+import { useAuthUser } from 'store'
 
 function login(token: string, noRedirect: boolean) {
   setAccessToken(token)
@@ -25,6 +25,10 @@ async function logout() {
 export const withAuthSync = (PageComponent: any) => {
   console.log('inside withAuthSync')
   const WithAuthSync = (props: any) => {
+    const setUser = useAuthUser(store => store.setUser)
+    if (props.user) {
+      setUser(props.user)
+    }
     const syncLogout = (event: any) => {
       if (event.key === 'logout') {
         console.log('logged out from storage!')
@@ -57,60 +61,20 @@ export const withAuthSync = (PageComponent: any) => {
   }
 
   WithAuthSync.getInitialProps = async (ctx: any) => {
-    const user = await getAuthUser(ctx.apolloClient)
+    const { token, user } = (await authenticate(ctx)) || {}
+
     if (!user) {
-      redirect(ctx, '/login')
+      redirectTo(`/login?redirect=${ctx.pathname}`, {
+        res: ctx.res,
+        status: 301
+      })
     }
     const componentProps =
       PageComponent.getInitialProps &&
       (await PageComponent.getInitialProps(ctx))
-
-    return { ...componentProps, user }
+    return { ...componentProps, token, user }
   }
   return WithAuthSync
 }
 
-async function authenticate(ctx: any) {
-  /*
-   * If `ctx.req` is available it means we are on the server.
-   * Additionally if there's no token it means the user is not logged in.
-   */
-  if (!getAccessToken()) {
-    try {
-      let header = {}
-      if (isServer) {
-        const { gid } = nextCookie(ctx.ctx)
-        if (gid) {
-          header = { ...header, cookie: 'gid=' + gid }
-        }
-      }
-      const response = await fetch(getRefreshTokenUrl(), {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache',
-          ...header
-        },
-        body: JSON.stringify({})
-      })
-      if (response.status === 201) {
-        const { token } = await response.json()
-        console.log(
-          `WithAuthSync.authenticate > isServer=${isServer} token=${!!token}`
-        )
-        setAccessToken(token)
-      } else {
-        const error = new Error(response.statusText)
-        // console.error('response', await response.json())
-        throw error
-      }
-    } catch (error) {
-      console.log(error)
-      // redirect(ctx, '/login')
-    }
-  }
-  return getAccessToken()
-}
-
-export { login, logout, authenticate }
+export { login, logout }

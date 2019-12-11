@@ -1,39 +1,38 @@
+import React from 'react'
+import get from 'lodash.get'
+import { NextPage } from 'next'
+import Link from 'next/link'
+import Router, { useRouter } from 'next/router'
+import { LoadingButton } from 'components/button'
 import useLoginForm from 'hooks/useLoginForm'
 import Layout from 'layout/Layout'
 import { setAccessToken } from 'lib/accessToken'
 import { LoginMutationVariables, useLoginMutation } from 'lib/api-graphql'
 import { withAuthUser } from 'lib/withAuthUser'
-import get from 'lodash.get'
-import { NextPage } from 'next'
-import Link from 'next/link'
-import Router from 'next/router'
-import React from 'react'
-import { isServer } from 'utils'
-import { LoadingButton } from 'components/button'
+import { useAuthUser } from 'store'
 import { withApollo } from 'lib/withApollo'
 
-// import redirect from '../lib/redirect'
-// import checkLoggedIn from '../lib/checkLoggedIn'
-
-const Login: NextPage = ({ user }: any) => {
-  React.useEffect(() => {
-    if (user && !isServer) {
-      Router.push('/dashboard')
-    }
-  }, [user])
-
+const Login: NextPage = () => {
+  const router = useRouter()
   const [loginMutation, { error, loading }] = useLoginMutation()
+  const setUser = useAuthUser(store => store.setUser)
 
   const onSubmit = async (variables: LoginMutationVariables) => {
     try {
       const response = await loginMutation({
         variables
       })
-      const { token } = get(response, 'data.login', {})
+      const { token, user } = get(response, 'data.login', {})
       if (token) {
         setAccessToken(token)
+        setUser(user)
       }
-      Router.push('/')
+      const redirect = get(router, 'query.redirect')
+      if (redirect) {
+        Router.replace(redirect)
+      } else {
+        Router.replace('/dashboard')
+      }
     } catch (e) {
       console.error(e)
     }
@@ -42,7 +41,7 @@ const Login: NextPage = ({ user }: any) => {
   const { formik } = useLoginForm({ onSubmit })
   return (
     <Layout title='Login | Genesis'>
-      {!user && (
+      {
         <section className='h-full flex-col self-center justify-center items-center'>
           <div className='w-full max-w-sm mx-auto'>
             <h1 className='text-lg font-bold my-3 text-center text-gray-600'>
@@ -135,9 +134,9 @@ const Login: NextPage = ({ user }: any) => {
             </p>
           </div>
         </section>
-      )}
+      }
     </Layout>
   )
 }
 
-export default withAuthUser(withApollo(Login))
+export default withApollo(withAuthUser(Login))

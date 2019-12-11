@@ -1,11 +1,12 @@
 import React from 'react'
 
 import useRegisterForm from 'hooks/useRegisterForm'
-import Layout from 'layout/Layout'
 import { useSignupMutation } from 'lib/api-graphql'
 import { withApollo } from 'lib/withApollo'
 import { NextPage } from 'next'
 import { LoadingButton } from 'components/button'
+import { withAuthSync } from 'lib/withAuthSync'
+import Layout from 'layout/Layout'
 
 const Profile: NextPage = () => {
   const [
@@ -157,4 +158,4 @@ const Profile: NextPage = () => {
   )
 }
 
-export default withApollo(Profile)
+export default withApollo(withAuthSync(Profile))

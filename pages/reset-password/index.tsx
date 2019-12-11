@@ -1,9 +1,10 @@
 import React from 'react'
 
 import useRegisterForm from 'hooks/useRegisterForm'
-import Layout from 'layout/Layout'
 import { useSignupMutation } from 'lib/api-graphql'
 import { withApollo } from 'lib/withApollo'
+import Layout from 'layout/Layout'
+import { withAuthUser } from 'lib/withAuthUser'
 
 const ResetPassword: React.FC = () => {
   const [
@@ -22,7 +23,7 @@ const ResetPassword: React.FC = () => {
   })
   console.log(JSON.stringify({ response, error }, null, 2))
   return (
-    <Layout title='Register | Genesis'>
+    <Layout title='Reset your password | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
         <div className='w-full max-w-sm mx-auto'>
           <h1 className='text-lg font-bold my-3 text-center text-gray-600'>
@@ -80,4 +81,4 @@ const ResetPassword: React.FC = () => {
   )
 }
 
-export default withApollo(ResetPassword)
+export default withApollo(withAuthUser(ResetPassword))

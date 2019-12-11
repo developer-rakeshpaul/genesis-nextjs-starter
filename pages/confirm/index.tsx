@@ -1,4 +1,3 @@
-import Layout from 'layout/Layout'
 import { NextPage } from 'next'
 import React from 'react'
 import { useRouter } from 'next/router'
@@ -7,7 +6,7 @@ import get from 'lodash.get'
 import Loader from 'components/loader'
 import { withApollo } from 'lib/withApollo'
 import { SignInButton } from 'components/button'
-
+import Layout from 'layout/Layout'
 const Confirm: NextPage = () => {
   const router = useRouter()
   const [confirmUser, { data, loading, error }] = useConfirmUserMutation()
@@ -28,7 +27,7 @@ const Confirm: NextPage = () => {
 
   console.log(error)
   return (
-    <Layout title='Home | Genesis'>
+    <Layout title='Confirm Sign Up | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
         <div className='w-full text-center mx-auto'>
           {!loading && <Loader />}
