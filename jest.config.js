@@ -1,3 +1,27 @@
+const TEST_REGEX = '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$'
+
 module.exports = {
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/']
+  // setupFiles: ['<rootDir>/jest.setup.js'],
+  testRegex: TEST_REGEX,
+  transform: {
+    '^.+\\.tsx?$': 'babel-jest',
+  },
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '/tailwind/',
+  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  collectCoverage: false,
+  moduleNameMapper: {
+    'components/(.*)$': '<rootDir>/components/$1',
+    'gql/(.*)$': '<rootDir>/gql/$1',
+    'hooks/(.*)$': '<rootDir>/hooks/$1',
+    'interfaces/(.*)$': '<rootDir>/interfaces/$1',
+    'layout/(.*)$': '<rootDir>/layout/$1',
+    'store/(.*)$': '<rootDir>/store/$1',
+    store: '<rootDir>/store',
+    // 'lib/(.*)$': '<rootDir>/lib/$1',
+    // 'utils/(.*)$': '<rootDir>/utils/$1'
+  },
 }

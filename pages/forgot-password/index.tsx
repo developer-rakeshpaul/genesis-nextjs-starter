@@ -1,29 +1,39 @@
 import { NextPage } from 'next'
+import * as Yup from 'yup'
 import Link from 'next/link'
 import React from 'react'
 import { LoadingButton } from 'components/button'
-import useRegisterForm from 'hooks/useRegisterForm'
-import { useSignupMutation } from 'lib/api-graphql'
 import { withApollo } from 'lib/withApollo'
 import Layout from 'layout/Layout'
 import { withAuthUser } from 'lib/withAuthUser'
+import { useFormik } from 'formik'
+import { useForgotPasswordMutation } from 'lib/api-graphql'
+import get from 'lodash.get'
+
+export const forgotPassordSchema = Yup.object().shape({
+  email: Yup.string()
+    .email()
+    .required(),
+})
 
 const ForgotPassword: NextPage = () => {
-  const [
-    signupMutation,
-    { data: response, loading, error }
-  ] = useSignupMutation()
-  const { formik } = useRegisterForm({
-    onSubmit: async (data: any): Promise<void> => {
+  const [forgotPassword, { data, loading, error }] = useForgotPasswordMutation()
+  const resetLinkSend = get(data, 'forgotPassword', false)
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema: forgotPassordSchema,
+    onSubmit: async (values: any): Promise<void> => {
       try {
-        await signupMutation({ variables: { data } })
+        await forgotPassword({ variables: values })
       } catch (error) {
         console.error('register', error)
       }
-    }
+    },
   })
 
-  console.log(JSON.stringify({ response, error }, null, 2))
+  console.log(data, error)
   return (
     <Layout title='Forgot Password | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
@@ -32,6 +42,25 @@ const ForgotPassword: NextPage = () => {
             Forgot Password
           </h1>
           <div className='bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4'>
+            {resetLinkSend && (
+              <p className='text-green-600'>
+                Please check your email and follow the instructions in the email
+                to reset your password.
+              </p>
+            )}
+            {!data && !resetLinkSend && !error && (
+              <p className='text-blue-600'>
+                We get it, stuff happens. Just enter your email address below
+                and we'll send you a link to reset your password!
+              </p>
+            )}
+
+            {data && (error || !resetLinkSend) && (
+              <p className='text-red-600'>
+                Error sending reset password instructions. Please check the
+                email and retry!
+              </p>
+            )}
             <form onSubmit={formik.handleSubmit}>
               <p className='mb-2 text-center text-red-500 text-xs italic'>
                 {/* {error} */}
@@ -56,9 +85,8 @@ const ForgotPassword: NextPage = () => {
                   className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
                   type='submit'
                   loading={loading}
-                  disabled={formik.isSubmitting || loading}
-                >
-                  Reset Password
+                  disabled={formik.isSubmitting || loading}>
+                  Email me a recovery link
                 </LoadingButton>
               </div>
             </form>

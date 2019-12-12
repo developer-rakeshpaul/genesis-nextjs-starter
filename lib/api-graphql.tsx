@@ -154,6 +154,15 @@ export type ConfirmUserMutation = { __typename?: 'Mutation' } & Pick<
   'confirm'
 >
 
+export type ForgotPasswordMutationVariables = {
+  email: Scalars['String']
+}
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'forgotPassword'
+>
+
 export type LoginMutationVariables = {
   email: Scalars['String']
   password?: Maybe<Scalars['String']>
@@ -263,7 +272,7 @@ export function useChangePasswordMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     ChangePasswordMutation,
     ChangePasswordMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<
     ChangePasswordMutation,
@@ -311,7 +320,7 @@ export function useConfirmUserMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     ConfirmUserMutation,
     ConfirmUserMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<
     ConfirmUserMutation,
@@ -327,6 +336,54 @@ export type ConfirmUserMutationResult = ApolloReactCommon.MutationResult<
 export type ConfirmUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ConfirmUserMutation,
   ConfirmUserMutationVariables
+>
+export const ForgotPasswordDocument = gql`
+  mutation forgotPassword($email: String!) {
+    forgotPassword(email: $email)
+  }
+`
+export type ForgotPasswordMutationFn = ApolloReactCommon.MutationFunction<
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables
+>
+
+/**
+ * __useForgotPasswordMutation__
+ *
+ * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useForgotPasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ForgotPasswordMutation,
+    ForgotPasswordMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ForgotPasswordMutation,
+    ForgotPasswordMutationVariables
+  >(ForgotPasswordDocument, baseOptions)
+}
+export type ForgotPasswordMutationHookResult = ReturnType<
+  typeof useForgotPasswordMutation
+>
+export type ForgotPasswordMutationResult = ApolloReactCommon.MutationResult<
+  ForgotPasswordMutation
+>
+export type ForgotPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables
 >
 export const LoginDocument = gql`
   mutation login($email: String!, $password: String) {
@@ -367,11 +424,11 @@ export function useLoginMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     LoginMutation,
     LoginMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(
     LoginDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
@@ -421,7 +478,7 @@ export function useLoginWithOtpMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     LoginWithOtpMutation,
     LoginWithOtpMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<
     LoginWithOtpMutation,
@@ -468,11 +525,11 @@ export function useLogoutMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     LogoutMutation,
     LogoutMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(
     LogoutDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
@@ -509,19 +566,22 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>
+  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
   return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(
     MeDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export function useMeLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    MeQuery,
+    MeQueryVariables
+  >,
 ) {
   return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(
     MeDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>
@@ -561,7 +621,7 @@ export function useResendConfirmEmailMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     ResendConfirmEmailMutation,
     ResendConfirmEmailMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<
     ResendConfirmEmailMutation,
@@ -609,7 +669,7 @@ export function useSendLoginOtpMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     SendLoginOtpMutation,
     SendLoginOtpMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<
     SendLoginOtpMutation,
@@ -660,11 +720,11 @@ export function useSignupMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
     SignupMutation,
     SignupMutationVariables
-  >
+  >,
 ) {
   return ApolloReactHooks.useMutation<SignupMutation, SignupMutationVariables>(
     SignupDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>

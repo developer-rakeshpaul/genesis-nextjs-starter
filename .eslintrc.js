@@ -5,13 +5,14 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint'
+    'prettier/@typescript-eslint',
+    'plugin:eslint-config-prettier/@typescript-eslint',
   ],
   parserOptions: {
     project: './tsconfig.json',
     ecmaFeatures: { jsx: true },
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'jest', 'react-hooks'],
   rules: {
@@ -24,29 +25,29 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/consistent-type-assertions': [
       'warn',
-      { assertionStyle: 'as' }
+      { assertionStyle: 'as' },
     ],
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/unbound-method': 0,
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn'
+    'react-hooks/exhaustive-deps': 'warn',
   },
   globals: { React: 'writable' },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx']
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
-      }
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
-    react: { version: 'detect' }
+    react: { version: 'detect' },
   },
   env: {
     browser: true,
-    node: true
-  }
+    node: true,
+  },
 }
