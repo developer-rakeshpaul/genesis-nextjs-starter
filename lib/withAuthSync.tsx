@@ -1,6 +1,6 @@
 import Router from 'next/router'
 import React from 'react'
-import { setAccessToken } from './accessToken'
+import { setAccessToken, getAccessToken } from './accessToken'
 import { isServer } from 'utils'
 import { redirectTo } from './redirect'
 import { authenticate } from './auth'
@@ -27,6 +27,9 @@ export const withAuthSync = (PageComponent: any) => {
     const setUser = useAuthUser(store => store.setUser)
     if (props.user) {
       setUser(props.user)
+    }
+    if (!getAccessToken() && props.token) {
+      setAccessToken(props.token)
     }
     const syncLogout = (event: any) => {
       if (event.key === 'logout') {

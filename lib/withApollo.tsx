@@ -51,6 +51,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
       let serverAccessToken = ''
 
+      console.log('WithApollo.getInitialProps', isServer)
       if (isServer) {
         const { gid } = nextCookie(ctx)
         if (gid) {

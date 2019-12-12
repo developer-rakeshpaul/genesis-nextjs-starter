@@ -11,12 +11,17 @@ const Menu: React.FC = () => {
       setToggle(false)
     }
   })
+  useEventListener('keydown', (e: React.KeyboardEvent) => {
+    if (open && e.key === 'Escape') {
+      setToggle(false)
+    }
+  })
 
   return (
     <>
       <div className='relative'>
         <img
-          className='inline-block h-8 w-8 rounded-full cursor-pointer'
+          className='inline-block h-8 w-8 rounded-full cursor-pointer border border-gray-300'
           src={`https://ui-avatars.com/api/?rounded=true&name=${user.name}`}
           onClick={() => setToggle(!open)}
           alt=''
