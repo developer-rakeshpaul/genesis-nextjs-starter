@@ -3,6 +3,7 @@ import React from 'react'
 import Footer from './Footer'
 import Header from './Header'
 import '../styles/index.css'
+// import Menu from 'components/menu'
 
 interface Props {
   title?: string
@@ -12,7 +13,6 @@ const Layout: React.FunctionComponent<Props> = ({
   children,
   title = 'Genesis'
 }) => {
-  console.log('inside layout')
   return (
     <div className='bg-gray-200 flex flex-col justify-between h-full min-h-screen'>
       <Head>
@@ -29,7 +29,7 @@ const Layout: React.FunctionComponent<Props> = ({
         />
       </Head>
       <Header />
-      <div className='block mb-4'>{children}</div>
+      <div className='block'>{children}</div>
       <Footer />
     </div>
   )

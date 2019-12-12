@@ -77,7 +77,6 @@ function createApolloClient(
 
   const authLink = setContext((_, { headers }) => {
     const token = isServer ? serverAccessToken : getAccessToken()
-    console.log(`setContext > isServer=${isServer} token=${!!token}`)
     return {
       headers: {
         ...headers,

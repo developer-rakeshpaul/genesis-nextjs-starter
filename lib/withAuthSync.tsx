@@ -23,7 +23,6 @@ async function logout() {
 }
 
 export const withAuthSync = (PageComponent: any) => {
-  console.log('inside withAuthSync')
   const WithAuthSync = (props: any) => {
     const setUser = useAuthUser(store => store.setUser)
     if (props.user) {
@@ -31,7 +30,6 @@ export const withAuthSync = (PageComponent: any) => {
     }
     const syncLogout = (event: any) => {
       if (event.key === 'logout') {
-        console.log('logged out from storage!')
         Router.push('/login')
       }
     }

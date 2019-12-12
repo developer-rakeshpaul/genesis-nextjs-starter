@@ -1,8 +1,9 @@
 import * as React from 'react'
-// import Link from 'next/link'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SignInButton } from 'components/button'
 import { useAuthUser } from 'store'
+import Menu from 'components/menu'
 
 const Header: React.FunctionComponent = () => {
   const router = useRouter()
@@ -24,8 +25,8 @@ const Header: React.FunctionComponent = () => {
     //   {!user && router.pathname !== '/login' && <SignInButton />}
     // </nav>
     <div className='bg-gray-100'>
-      <div className='mx-auto px-4'>
-        <div className='flex items-center md:justify-between py-4'>
+      <div className='mx-auto px-4 '>
+        <div className='flex items-center md:justify-between py-4 relative'>
           {/* <div className='w-1/4 md:hidden'>
             <svg
               className='fill-current text-black h-8 w-8'
@@ -36,38 +37,18 @@ const Header: React.FunctionComponent = () => {
             </svg>
           </div> */}
           <div className='w-1/2 md:w-auto text-blue-800 text-2xl font-medium'>
-            <span className='text-blue-900 font-light text-2xl'>
-              &Xi; &nbsp;
-            </span>
-            Genesis
+            <Link href={user ? '/dashboard' : '/'}>
+              <a href={user ? '/dashboard' : '/'}>
+                <span className='text-blue-900 font-light text-2xl'>
+                  &Xi; &nbsp;
+                </span>
+                Genesis
+              </a>
+            </Link>
           </div>
           <div className='w-1/2 md:w-auto md:flex text-right'>
             {!user && router.pathname !== '/login' && <SignInButton />}
-            {user && (
-              <>
-                <div>
-                  <img
-                    className='inline-block h-8 w-8 rounded-full'
-                    src='https://ui-avatars.com/api/?rounded=true&name=Rakesh+Paul'
-                    alt=''
-                  />
-                </div>
-                <div className='hidden md:block md:flex md:items-center ml-2'>
-                  <span className='text-blue-800 text-sm mr-1'>
-                    Rakesh Paul
-                  </span>
-                  <div>
-                    <svg
-                      className='fill-current text-blue-800 h-4 w-4 block opacity-50'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.295l3.908-3.747c.533-.481 1.141-.446 1.574 0 .436.445.408 1.197 0 1.615-.406.418-4.695 4.502-4.695 4.502a1.095 1.095 0 0 1-1.576 0S4.924 9.581 4.516 9.163c-.409-.418-.436-1.17 0-1.615z' />
-                    </svg>
-                  </div>
-                </div>
-              </>
-            )}
+            {user && <Menu />}
           </div>
         </div>
       </div>

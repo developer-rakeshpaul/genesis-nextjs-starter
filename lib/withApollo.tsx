@@ -16,14 +16,12 @@ import { ApolloProvider } from '@apollo/react-hoc'
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent: any, { ssr = true } = {}) {
-  console.log('Inside withApollo HOC', new Date())
   const WithApollo = ({
     apolloClient,
     apolloState,
     serverAccessToken,
     ...pageProps
   }: any) => {
-    console.log('Inside WithApollo component', new Date())
     if (!isServer && !getAccessToken()) {
       setAccessToken(serverAccessToken)
     }
@@ -49,7 +47,6 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
   if (ssr || PageComponent.getInitialProps) {
     WithApollo.getInitialProps = async (ctx: any) => {
-      console.log('inside WithApolloComponent getInitial Props', new Date())
       const { AppTree } = ctx
 
       let serverAccessToken = ''
@@ -57,15 +54,19 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       if (isServer) {
         const { gid } = nextCookie(ctx)
         if (gid) {
-          const response = await fetch(getRefreshTokenUrl(), {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              cookie: 'gid=' + gid
-            }
-          })
-          const data = await response.json()
-          serverAccessToken = data.token
+          try {
+            const response = await fetch(getRefreshTokenUrl(), {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                cookie: 'gid=' + gid
+              }
+            })
+            const data = await response.json()
+            serverAccessToken = data.token
+          } catch (error) {
+            serverAccessToken = ''
+          }
         }
       }
       // Initialize ApolloClient, add it to the ctx object so

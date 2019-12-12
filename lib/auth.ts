@@ -15,7 +15,6 @@ export const authenticate = async (ctx: any): Promise<AuthPayload | null> => {
         header = { ...header, cookie: 'gid=' + gid }
       }
     }
-    console.log(header)
     const response = await fetch(getRefreshTokenUrl(), {
       method: 'POST',
       credentials: 'include',
@@ -32,7 +31,6 @@ export const authenticate = async (ctx: any): Promise<AuthPayload | null> => {
       return null
     }
   } catch (error) {
-    console.log(error)
     return null
   }
 }

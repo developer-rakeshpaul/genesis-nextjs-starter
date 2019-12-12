@@ -1,29 +1,19 @@
 import React from 'react'
 
-import useRegisterForm from 'hooks/useRegisterForm'
-import { useSignupMutation } from 'lib/api-graphql'
 import { withApollo } from 'lib/withApollo'
 import { NextPage } from 'next'
 import { LoadingButton } from 'components/button'
 import { withAuthSync } from 'lib/withAuthSync'
 import Layout from 'layout/Layout'
+import { useFormik } from 'formik'
 
-const Profile: NextPage = () => {
-  const [
-    signupMutation,
-    { data: response, loading, error }
-  ] = useSignupMutation()
-
-  const { formik } = useRegisterForm({
+const Profile: NextPage = ({ user }: any) => {
+  const formik = useFormik({
+    initialValues: user,
     onSubmit: async (data: any): Promise<void> => {
-      try {
-        await signupMutation({ variables: { data } })
-      } catch (error) {
-        console.error('register', error)
-      }
+      console.log(data)
     }
   })
-  console.log(JSON.stringify({ response, error }, null, 2))
   return (
     <Layout title='Account | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
@@ -46,7 +36,7 @@ const Profile: NextPage = () => {
                   />
                   <img
                     className='w-32 h-32 rounded-full shadow-xl m-auto border border-gray-200 z-10'
-                    src='https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_1280.png'
+                    src={`https://ui-avatars.com/api/?rounded=true&name=${user.name}`}
                     alt='profile pic'
                   />
                 </div>
@@ -97,18 +87,18 @@ const Profile: NextPage = () => {
                 <LoadingButton
                   className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
                   type='submit'
-                  loading={loading}
-                  disabled={formik.isSubmitting || loading}
+                  // loading={loading}
+                  disabled={formik.isSubmitting}
                 >
                   Update
                 </LoadingButton>
               </div>
             </form>
           </div>
-          <div className='bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4'>
+          {/* <div className='bg-white md:shadow-md md:rounded px-8 pt-6 pb-8 mb-4'>
             <form onSubmit={formik.handleSubmit}>
               <p className='mb-2 text-center text-red-500 text-xs italic'>
-                {/* {error} */}
+                {error}
               </p>
               <div className='my-6'>
                 <input
@@ -145,13 +135,13 @@ const Profile: NextPage = () => {
                   className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
                   type='submit'
                   loading={loading}
-                  disabled={formik.isSubmitting || loading}
+                  disabled={formik.isSubmitting }
                 >
                   Change Password
                 </LoadingButton>
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
       </section>
     </Layout>

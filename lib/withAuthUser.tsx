@@ -1,14 +1,9 @@
 import React from 'react'
 import { authenticate } from './auth'
-import { isServer } from 'utils'
 import { redirectTo } from './redirect'
 
 const withAuthUser = (Page: any) => {
-  console.log('inside withAuthUser')
   const WithAuthUser = (props: any) => {
-    if (!isServer) {
-      console.log('WithAuthUser props: ', props.user)
-    }
     return <Page {...props} />
   }
 
@@ -24,10 +19,8 @@ const withAuthUser = (Page: any) => {
   }
 
   WithAuthUser.getInitialProps = async (ctx: any) => {
-    console.log('inside withAuthUser getInitialProps')
     const { token, user } = (await authenticate(ctx)) || {}
 
-    console.log('WithAuthUser.getInitialProps: ', user)
     const redirectPaths = ['/login', '/forgot-password', '/reset-password']
     if (user && redirectPaths.includes(ctx.pathname)) {
       redirectTo('/dashboard', { res: ctx.res, status: 301 })
