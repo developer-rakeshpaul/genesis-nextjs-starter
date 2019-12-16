@@ -66,11 +66,10 @@ const LoadingButton: React.FC<LoadingButtonProps &
         showLoader
           ? {
               width: `${width}px`,
-              height: `${height}px`
+              height: `${height}px`,
             }
           : {}
-      }
-    >
+      }>
       {showLoader ? (
         <animated.div style={fadeOutProps}>
           <Loader />

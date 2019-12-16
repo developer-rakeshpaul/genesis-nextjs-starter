@@ -22,12 +22,6 @@ const withAuthUser = (Page: any) => {
     const { token, user } = (await authenticate(ctx)) || {}
 
     const redirectPaths = ['/login', '/forgot-password', '/reset-password']
-    console.log(
-      'WithAuthUser.getInitialProps: ',
-      user,
-      ctx.pathname,
-      redirectPaths.includes(ctx.pathname),
-    )
     if (user && redirectPaths.includes(ctx.pathname)) {
       redirectTo('/dashboard', { res: ctx.res, status: 301 })
     }

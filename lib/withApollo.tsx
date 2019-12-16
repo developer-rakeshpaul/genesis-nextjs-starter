@@ -51,7 +51,6 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
       let serverAccessToken = ''
 
-      console.log('WithApollo.getInitialProps', isServer)
       if (isServer) {
         const { gid } = nextCookie(ctx)
         if (gid) {
@@ -60,8 +59,8 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
               method: 'POST',
               credentials: 'include',
               headers: {
-                cookie: 'gid=' + gid
-              }
+                cookie: 'gid=' + gid,
+              },
             })
             const data = await response.json()
             serverAccessToken = data.token
@@ -75,7 +74,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       // eslint-disable-next-line require-atomic-updates
       const apolloClient = (ctx.apolloClient = initApolloClient(
         {},
-        serverAccessToken
+        serverAccessToken,
       ))
 
       // Run wrapped getInitialProps methods
@@ -101,9 +100,9 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
               <AppTree
                 pageProps={{
                   ...pageProps,
-                  apolloClient
+                  apolloClient,
                 }}
-              />
+              />,
             )
           } catch (error) {
             // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -124,7 +123,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       return {
         ...pageProps,
         apolloState,
-        serverAccessToken
+        serverAccessToken,
       }
     }
   }

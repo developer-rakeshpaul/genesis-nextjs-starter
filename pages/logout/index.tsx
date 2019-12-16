@@ -18,14 +18,13 @@ const Logout: NextPage = () => {
         const response = await logoutMutation({
           fetchPolicy: 'no-cache',
         })
-        console.log(response)
         if (get(response, 'data.logout', false)) {
           logout()
         }
         setUser(null)
       } catch (error) {
-        console.log(error)
         logout()
+        setUser(null)
       }
     }
     handleLogout()
