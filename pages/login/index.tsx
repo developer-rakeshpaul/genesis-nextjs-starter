@@ -20,8 +20,9 @@ const Login: NextPage = () => {
   const onSubmit = async (variables: LoginMutationVariables) => {
     try {
       const response = await loginMutation({
-        variables
+        variables,
       })
+
       const { token, user } = get(response, 'data.login', {})
       if (token) {
         setAccessToken(token)
@@ -53,6 +54,11 @@ const Login: NextPage = () => {
                   {JSON.stringify(error)}
                 </p>
                 <div className='my-6'>
+                  <label
+                    className='block text-gray-700 text-sm mb-2'
+                    htmlFor='email'>
+                    Email
+                  </label>
                   <input
                     name='email'
                     className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
@@ -96,8 +102,7 @@ const Login: NextPage = () => {
                     className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
                     type='submit'
                     loading={loading}
-                    disabled={formik.isSubmitting}
-                  >
+                    disabled={formik.isSubmitting}>
                     Sign In
                   </LoadingButton>
                 </div>
@@ -126,8 +131,7 @@ const Login: NextPage = () => {
               <Link href='/register'>
                 <a
                   href='/register'
-                  className='ml-2 text-blue-700 hover:text-blue-500'
-                >
+                  className='ml-2 text-blue-700 hover:text-blue-500'>
                   Create account
                 </a>
               </Link>

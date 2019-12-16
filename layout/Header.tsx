@@ -1,11 +1,11 @@
-import * as React from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SignInButton } from 'components/button'
 import { useAuthUser } from 'store'
 import Menu from 'components/menu'
 
-const Header: React.FunctionComponent = () => {
+const Header: React.FC = () => {
   const router = useRouter()
   const user = useAuthUser(store => store.user)
 

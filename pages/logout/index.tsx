@@ -16,7 +16,7 @@ const Logout: NextPage = () => {
     async function handleLogout() {
       try {
         const response = await logoutMutation({
-          fetchPolicy: 'no-cache'
+          fetchPolicy: 'no-cache',
         })
         console.log(response)
         if (get(response, 'data.logout', false)) {
@@ -29,7 +29,7 @@ const Logout: NextPage = () => {
       }
     }
     handleLogout()
-  }, [logoutMutation])
+  }, [logoutMutation, setUser])
 
   return (
     <Layout>

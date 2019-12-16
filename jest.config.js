@@ -19,8 +19,10 @@ module.exports = {
     'hooks/(.*)$': '<rootDir>/hooks/$1',
     'interfaces/(.*)$': '<rootDir>/interfaces/$1',
     'layout/(.*)$': '<rootDir>/layout/$1',
+    'lib/(.*)$': '<rootDir>/lib/$1',
     'store/(.*)$': '<rootDir>/store/$1',
     store: '<rootDir>/store',
+    '\\.css$': require.resolve('./__tests__/style-mock.js'),
     // 'lib/(.*)$': '<rootDir>/lib/$1',
     // 'utils/(.*)$': '<rootDir>/utils/$1'
   },

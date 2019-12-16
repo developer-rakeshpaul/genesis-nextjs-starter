@@ -1,5 +1,5 @@
 import { FormikValues, useFormik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 
 export interface RegisterFormProps {
   email: string
@@ -10,30 +10,30 @@ export interface RegisterFormProps {
 export const defaultInitialValues: RegisterFormProps = {
   email: '',
   password: '',
-  name: ''
+  name: '',
 }
 
-export const DefaultRegisterSchema = Yup.object().shape({
-  password: Yup.string()
+export const DefaultRegisterSchema = object().shape({
+  password: string()
     .required()
     .min(6),
-  name: Yup.string()
+  name: string()
     .required()
     .min(2),
-  email: Yup.string()
+  email: string()
     .email()
-    .required()
+    .required(),
 })
 
 function useRegisterForm<T extends FormikValues>({
   initialValues = defaultInitialValues,
   validationSchema = DefaultRegisterSchema,
-  onSubmit
+  onSubmit,
 }: T) {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit
+    onSubmit,
   })
   return { formik }
 }

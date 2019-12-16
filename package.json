@@ -7,10 +7,14 @@
     "start": "next start",
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore . --ext .js,.jsx,.ts,.tsx",
-    "generate": "gql-gen --config codegen.yml",
+    "pretty-quick": "pretty-quick",
+    "analyze": "cross-env ANALYZE=1 next build && cat .next/stats.txt",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\"",
+    "format": "npm run prettier -- --write",
+    "check-format": "npm run prettier -- --list-different",
+    "validate": "npm-run-all --parallel check-format lint build",
     "api:codegen": "graphql-codegen --config codegen-api.yml",
-    "codegen": "graphql-codegen --config codegen.yml",
-    "pretty-quick": "pretty-quick"
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
@@ -63,12 +67,13 @@
     "@types/react-helmet": "^5.0.14",
     "@types/styled-components": "4.4.0",
     "@types/yup": "^0.26.26",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
+    "@typescript-eslint/eslint-plugin": "^2.11.0",
+    "@typescript-eslint/parser": "^2.11.0",
     "apollo-link-token-refresh": "^0.2.7",
     "autoprefixer": "^9.7.3",
     "babel-jest": "^24.9.0",
     "babel-plugin-macros": "^2.8.0",
+    "cross-env": "^6.0.3",
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
     "eslint": "^6.7.2",
@@ -85,17 +90,15 @@
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "jwt-decode": "^2.2.0",
+    "lint-staged": "^9.5.0",
+    "npm-run-all": "^4.1.5",
     "postcss-easy-import": "^3.0.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "tailwind.macro": "^1.0.0-alpha.10",
     "tailwindcss": "^1.1.4",
-    "typescript": "3.7.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
+    "typescript": "3.7.2",
+    "webpack-bundle-size-analyzer": "^3.1.0"
   },
   "license": "ISC"
 }

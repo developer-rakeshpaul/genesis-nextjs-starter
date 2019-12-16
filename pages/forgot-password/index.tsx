@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import Link from 'next/link'
 import React from 'react'
 import { LoadingButton } from 'components/button'
@@ -10,8 +10,8 @@ import { useFormik } from 'formik'
 import { useForgotPasswordMutation } from 'lib/api-graphql'
 import get from 'lodash.get'
 
-export const forgotPassordSchema = Yup.object().shape({
-  email: Yup.string()
+export const forgotPassordSchema = object().shape({
+  email: string()
     .email()
     .required(),
 })

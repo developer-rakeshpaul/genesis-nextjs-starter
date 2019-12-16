@@ -1,20 +1,22 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2019,
+    ecmaFeatures: {
+      jsx: true,
+    },
+    sourceType: 'module',
+    project: './tsconfig.json',
+  },
+  plugins: ['@typescript-eslint/eslint-plugin', 'jest', 'react-hooks'],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
-    'plugin:eslint-config-prettier/@typescript-eslint',
+    'eslint-config-prettier',
+    'eslint-config-prettier/@typescript-eslint',
   ],
-  parserOptions: {
-    project: './tsconfig.json',
-    ecmaFeatures: { jsx: true },
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint', 'jest', 'react-hooks'],
   rules: {
     eqeqeq: 1,
     'react/react-in-jsx-scope': 'off',
@@ -27,6 +29,8 @@ module.exports = {
       'warn',
       { assertionStyle: 'as' },
     ],
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/unbound-method': 0,

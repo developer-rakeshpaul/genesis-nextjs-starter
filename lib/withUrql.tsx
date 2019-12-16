@@ -4,24 +4,25 @@ import { Provider } from 'urql'
 import ssrPrepass from 'react-ssr-prepass'
 import initUrqlClient from './initUrql'
 
-const withUrqlClient = (App: any) => {
-  const withUrql = (props: any) => {
+const withUrqlClient = (PageComponent: any) => {
+  const WithUrql = (props: any) => {
     const urqlClient = React.useMemo(
       () => props.urqlClient || initUrqlClient(props.urqlState)[0],
-      []
+      [props.urqlClient, props.urqlState],
     )
     return (
       <Provider value={urqlClient}>
-        <App {...props} urqlClient={urqlClient} />
+        <PageComponent {...props} urqlClient={urqlClient} />
       </Provider>
     )
   }
 
-  withUrql.getInitialProps = async (ctx: any) => {
+  WithUrql.getInitialProps = async (ctx: any) => {
     const { AppTree } = ctx
     // Run the wrapped component's getInitialProps function
     let appProps = {}
-    if (App.getInitialProps) appProps = await App.getInitialProps(ctx)
+    if (PageComponent.getInitialProps)
+      appProps = await PageComponent.getInitialProps(ctx)
 
     // getInitialProps is universal, but we only want
     // to run server-side rendered suspense on the server
@@ -35,9 +36,9 @@ const withUrqlClient = (App: any) => {
       <AppTree
         pageProps={{
           ...appProps,
-          urqlClient
+          urqlClient,
         }}
-      />
+      />,
     )
 
     // Extract query data from the urql store
@@ -46,11 +47,11 @@ const withUrqlClient = (App: any) => {
 
     return {
       ...appProps,
-      urqlState
+      urqlState,
     }
   }
 
-  return withUrql
+  return WithUrql
 }
 
 export default withUrqlClient

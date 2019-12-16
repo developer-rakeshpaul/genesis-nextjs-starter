@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import React from 'react'
-import Footer from './Footer'
 import Header from './Header'
-import '../styles/index.css'
+import Footer from './Footer'
+
 // import Menu from 'components/menu'
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 const Layout: React.FunctionComponent<Props> = ({
   children,
-  title = 'Genesis'
+  title = 'Genesis',
 }) => {
   return (
     <div className='bg-gray-200 flex flex-col justify-between h-full min-h-screen'>
