@@ -13,6 +13,7 @@ module.exports = withCSS({
     API_HOST: process.env.API_HOST,
     API_PROTOCOL: process.env.API_PROTOCOL,
     API_REFRESH_TOKEN_PATH: process.env.API_REFRESH_TOKEN_PATH,
+    HASURA_URL: process.env.HASURA_URL,
   },
   webpack(config) {
     config.resolve.alias['components'] = path.join(__dirname, 'components')

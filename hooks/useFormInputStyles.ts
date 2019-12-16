@@ -12,13 +12,13 @@ const getInputStyles = (type: INPUT_STATE) => {
   let inputBorder = 'border border-blue-400 hover:border-blue-600'
   switch (type) {
     case INPUT_STATE.VALID:
-      inputBorder = 'border border-green-400 hover:border-green-600'
+      inputBorder = 'border border-green-300 hover:border-green-500'
       break
     case INPUT_STATE.ERROR:
-      inputBorder = 'border border-red-500 hover:border-red-700'
+      inputBorder = 'border border-red-300 hover:border-red-500'
       break
     default:
-      inputBorder = 'border border-blue-400 hover:border-blue-600'
+      inputBorder = 'border border-blue-300 hover:border-blue-500'
   }
 
   return baseStyle + ' ' + inputBorder

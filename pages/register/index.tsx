@@ -1,42 +1,22 @@
 import React from 'react'
+import { NextPage } from 'next'
 import Link from 'next/link'
-
-import useRegisterForm from 'hooks/useRegisterForm'
-import { useSignupMutation } from 'lib/api-graphql'
-import { withApollo } from 'lib/withApollo'
-import Layout from 'layout/Layout'
-import { authUser } from 'store'
-import { isServer } from 'utils'
-import Router from 'next/router'
 import FormLabel from 'components/form/label'
+import Layout from 'layout/Layout'
+import useFormInputStyles from 'hooks/useFormInputStyles'
+import useRegisterForm from 'hooks/useRegisterForm'
 import { FormWrapper } from 'components/form/wrapper'
+import { LoadingButton } from 'components/button'
+import { withApollo } from 'lib/withApollo'
 
-const Register = () => {
-  const destroy = authUser.subscribe(user => {
-    if (user && !isServer) {
-      Router.push('/dashboard')
-    }
-  })
-  React.useEffect(() => {
-    return destroy
-  })
+const Register: NextPage = () => {
+  const { formik, data, loading, error, handleChange } = useRegisterForm()
 
-  const [
-    signupMutation,
-    { data: response, loading, error },
-  ] = useSignupMutation()
+  const nameInputStyles = useFormInputStyles(formik, 'name', 2)
+  const emailInputStyles = useFormInputStyles(formik, 'email')
+  const passwordInputStyles = useFormInputStyles(formik, 'password', 6)
 
-  const { formik } = useRegisterForm({
-    onSubmit: async (data: any): Promise<void> => {
-      try {
-        await signupMutation({ variables: { data } })
-      } catch (error) {
-        // console.error('register', error)
-      }
-    },
-  })
-
-  console.log('mutation: ', JSON.stringify({ response, error }, null, 2))
+  console.log('mutation: ', JSON.stringify({ data, error }, null, 2), formik)
   return (
     <Layout title='Create an Account | Genesis'>
       <FormWrapper>
@@ -48,17 +28,14 @@ const Register = () => {
             Create an account
           </p>
           <form onSubmit={formik.handleSubmit}>
-            <p className='mb-2 text-center text-red-500 text-xs italic'>
-              {/* {error} */}
-            </p>
-            <div className='mb-6'>
+            <div className='mb-4'>
               <FormLabel htmlFor='name'>Name</FormLabel>
               <input
-                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
+                className={nameInputStyles}
                 type='text'
                 name='name'
                 placeholder='ex. John Doe'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 value={formik.values.name}
               />
               {formik.touched.name && formik.errors.name && (
@@ -67,14 +44,14 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className='my-6'>
+            <div className='mb-4'>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <input
-                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
+                className={emailInputStyles}
                 type='email'
                 name='email'
                 placeholder='ex. johndoe@somemail.com'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 value={formik.values.email}
               />
               {formik.touched.email && formik.errors.email && (
@@ -83,14 +60,14 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className='mb-2'>
+            <div className='mb-4'>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <input
-                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
+                className={passwordInputStyles}
                 type='password'
                 name='password'
                 placeholder='Min. 6 characters'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 value={formik.values.password}
               />
               {formik.touched.password && formik.errors.password && (
@@ -118,12 +95,13 @@ const Register = () => {
               </p>
             </div>
             <div className='mt-4 flex items-center justify-between'>
-              <button
+              <LoadingButton
                 className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
                 type='submit'
+                loading={formik.isSubmitting || loading}
                 disabled={formik.isSubmitting || loading}>
                 Create your account
-              </button>
+              </LoadingButton>
             </div>
           </form>
         </div>

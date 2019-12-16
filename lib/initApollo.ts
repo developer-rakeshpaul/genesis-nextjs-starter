@@ -1,9 +1,9 @@
-import { isServer } from './../utils/index'
+import { isServer, getGraphqlUrl, getHasuraGraphqlUrl } from './../utils/index'
 import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject
+  NormalizedCacheObject,
 } from 'apollo-boost'
 import { ApolloLink } from 'apollo-link'
 import { setContext } from 'apollo-link-context'
@@ -23,7 +23,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
  */
 function createApolloClient(
   initialState: any = {},
-  serverAccessToken?: string
+  serverAccessToken?: string,
 ) {
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
 
@@ -63,7 +63,7 @@ function createApolloClient(
     fetchAccessToken: () => {
       return fetch(getRefreshTokenUrl(), {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       })
     },
     handleFetch: (token: string) => {
@@ -72,7 +72,7 @@ function createApolloClient(
     handleError: err => {
       console.warn('Your refresh token is invalid. Try to relogin')
       console.error(err)
-    }
+    },
   })
 
   const authLink = setContext((_, { headers }) => {
@@ -80,33 +80,27 @@ function createApolloClient(
     return {
       headers: {
         ...headers,
-        authorization: token ? `bearer ${token}` : ''
-      }
+        authorization: token ? `bearer ${token}` : '',
+      },
     }
   })
 
   const apiLink = new HttpLink({
-    uri:
-      process.env.NODE_ENV === 'production'
-        ? 'https://server.genesis.com/graphql'
-        : 'http://localhost:4000/graphql',
+    uri: getGraphqlUrl(),
     credentials: 'include',
-    fetch
+    fetch,
   })
 
   const hasuraLink = new HttpLink({
-    uri:
-      process.env.NODE_ENV === 'production'
-        ? 'https://hasura.genesis.com/graphql'
-        : 'http://localhost:9090/v1/graphql',
+    uri: getHasuraGraphqlUrl(),
     credentials: 'include',
-    fetch
+    fetch,
   })
 
   const httpLink = ApolloLink.split(
     operation => operation.getContext().clientName === 'hasura', // Routes the query to the proper client
     hasuraLink,
-    apiLink
+    apiLink,
   )
 
   const client = new ApolloClient({
@@ -114,7 +108,7 @@ function createApolloClient(
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
     link: ApolloLink.from([refreshLink, authLink, errorLink, httpLink]),
 
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache().restore(initialState || {}),
   })
   return client
 }
@@ -126,7 +120,7 @@ function createApolloClient(
  */
 export function initApolloClient(
   initialState: any = {},
-  serverAccessToken?: string
+  serverAccessToken?: string,
 ) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)

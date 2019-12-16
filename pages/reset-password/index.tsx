@@ -14,26 +14,14 @@ import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 import Error from 'next/error'
 import FormLabel from 'components/form/label'
-
-const PASSWORD_MIN_LENGTH = 6
-const passwordRules = [
-  'At least 1 upper case letter(A-Z)',
-  'At least 1 number(0-9)',
-  `At least ${PASSWORD_MIN_LENGTH} characters`,
-]
-
-const [uc, numeric, min] = passwordRules
+import {
+  passwordSchema,
+  PASSWORD_MIN_LENGTH,
+  passwordRules,
+} from 'utils/schema'
 
 const resetPasswordSchema = object().shape({
-  password: string()
-    .test('uc', uc, val => {
-      return /[A-Z]/.test(val)
-    })
-    .test('numeric', numeric, val => {
-      return /[0-9]/.test(val)
-    })
-    .min(PASSWORD_MIN_LENGTH, min)
-    .required('Please provide a password'),
+  password: passwordSchema,
   confirmPassword: string().when('password', {
     is: val => (val && val.length >= PASSWORD_MIN_LENGTH ? true : false),
     then: string().oneOf([ref('password')], 'Passwords do not match'),
@@ -66,8 +54,9 @@ const ResetPassword: NextPage = () => {
 
   const rulesElements = passwordRules.map((rule: string, index: number) => {
     const password = get(formik, 'values.password')
-    let className = 'text-sm text-gray-700'
+    const [uc, numeric, min] = passwordRules
 
+    let className = 'text-sm text-gray-700'
     if (password) {
       if (
         (rule === uc && /[A-Z]/.test(password)) ||

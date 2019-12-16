@@ -1,5 +1,7 @@
-import { FormikValues, useFormik } from 'formik'
 import { object, string } from 'yup'
+import { passwordSchema, emailSchema } from 'utils/schema'
+import { useSignupMutation } from 'lib/api-graphql'
+import useForm from './useForm'
 
 export interface RegisterFormProps {
   email: string
@@ -7,35 +9,36 @@ export interface RegisterFormProps {
   name: string
 }
 
-export const defaultInitialValues: RegisterFormProps = {
+export const initialValues: RegisterFormProps = {
   email: '',
   password: '',
   name: '',
 }
 
-export const DefaultRegisterSchema = object().shape({
-  password: string()
-    .required()
-    .min(6),
+export const validationSchema = object().shape({
+  password: passwordSchema,
   name: string()
     .required()
     .min(2),
-  email: string()
-    .email()
-    .required(),
+  email: emailSchema,
 })
 
-function useRegisterForm<T extends FormikValues>({
-  initialValues = defaultInitialValues,
-  validationSchema = DefaultRegisterSchema,
-  onSubmit,
-}: T) {
-  const formik = useFormik({
+function useRegistrationForm() {
+  const [signupMutation, { data, loading }] = useSignupMutation()
+
+  const { formik, error, setError, handleChange } = useForm({
     initialValues,
     validationSchema,
-    onSubmit,
+    onSubmit: async (data: any): Promise<void> => {
+      try {
+        await signupMutation({ variables: { data } })
+      } catch (error) {
+        setError(error)
+      }
+    },
   })
-  return { formik }
+
+  return { formik, data, loading, error, setError, handleChange }
 }
 
-export default useRegisterForm
+export default useRegistrationForm
