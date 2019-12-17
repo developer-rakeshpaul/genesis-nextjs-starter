@@ -1,48 +1,18 @@
-import React from 'react'
-import get from 'lodash.get'
-import { NextPage } from 'next'
-import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
 import { LoadingButton } from 'components/button'
-import useLoginForm from 'hooks/useLoginForm'
-import Layout from 'layout/Layout'
-import { setAccessToken } from 'lib/accessToken'
-import { LoginMutationVariables, useLoginMutation } from 'lib/api-graphql'
-import { withAuthUser } from 'lib/withAuthUser'
-import { useAuthUser } from 'store'
-import { withApollo } from 'lib/withApollo'
 import { FormError } from 'components/form/error'
 import FormLabel from 'components/form/label'
 import { FormWrapper } from 'components/form/wrapper'
+import useLoginForm from 'hooks/useLoginForm'
+import Layout from 'layout/Layout'
+import { withApollo } from 'lib/withApollo'
+import { withAuthUser } from 'lib/withAuthUser'
+import { NextPage } from 'next'
+import Link from 'next/link'
+import React from 'react'
+import get from 'lodash.get'
 
 const Login: NextPage = () => {
-  const router = useRouter()
-  const [loginMutation, { error, loading }] = useLoginMutation()
-  const setUser = useAuthUser(store => store.setUser)
-
-  const onSubmit = async (variables: LoginMutationVariables) => {
-    try {
-      const response = await loginMutation({
-        variables,
-      })
-
-      const { token, user } = get(response, 'data.login', {})
-      if (token) {
-        setAccessToken(token)
-        setUser(user)
-      }
-      const redirect = get(router, 'query.redirect')
-      if (redirect) {
-        Router.replace(redirect)
-      } else {
-        Router.replace('/dashboard')
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const { formik } = useLoginForm({ onSubmit })
+  const { formik, loading, error, handleChange } = useLoginForm()
   return (
     <Layout title='Login | Genesis'>
       <FormWrapper>
@@ -61,7 +31,7 @@ const Login: NextPage = () => {
                 name='email'
                 className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='email'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 value={formik.values.email}
                 placeholder='ex. johndoe@somemail.com'
               />
@@ -77,15 +47,16 @@ const Login: NextPage = () => {
                 name='password'
                 className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='password'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 value={formik.values.password}
-                placeholder='Min. 6 characters'
+                placeholder={"don't you remember me"}
               />
-              {formik.touched.password && formik.errors.password && (
-                <div className='mt-1 text-red-500 text-xs italic'>
-                  {formik.errors.password}
-                </div>
-              )}{' '}
+              {formik.touched.password &&
+                get(formik, 'values.password.length', 0) === 0 && (
+                  <div className='mt-1 text-red-500 text-xs italic'>
+                    {formik.errors.password}
+                  </div>
+                )}
             </div>
             <div>
               <p className='block text-right'>

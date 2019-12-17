@@ -1,56 +1,28 @@
-import React from 'react'
-import { object, string, ref } from 'yup'
-import { useResetPasswordMutation } from 'lib/api-graphql'
-import { withApollo } from 'lib/withApollo'
-import Layout from 'layout/Layout'
-import { withAuthUser } from 'lib/withAuthUser'
-import { useFormik } from 'formik'
 import get from 'lodash.get'
-import useFormInputStyles from 'hooks/useFormInputStyles'
-import { FormError } from 'components/form/error'
-import { LoadingButton } from 'components/button'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 import Error from 'next/error'
+import Link from 'next/link'
+import React from 'react'
+import { LoadingButton } from 'components/button'
+import { FormError } from 'components/form/error'
 import FormLabel from 'components/form/label'
-import {
-  passwordSchema,
-  PASSWORD_MIN_LENGTH,
-  passwordRules,
-} from 'utils/schema'
-
-const resetPasswordSchema = object().shape({
-  password: passwordSchema,
-  confirmPassword: string().when('password', {
-    is: val => (val && val.length >= PASSWORD_MIN_LENGTH ? true : false),
-    then: string().oneOf([ref('password')], 'Passwords do not match'),
-  }),
-})
+import useFormInputStyles from 'hooks/useFormInputStyles'
+import useResetPasswordForm from 'hooks/useResetPasswordForm'
+import Layout from 'layout/Layout'
+import { withApollo } from 'lib/withApollo'
+import { withAuthUser } from 'lib/withAuthUser'
+import { passwordRules, PASSWORD_MIN_LENGTH } from 'utils/schema'
 
 const ResetPassword: NextPage = () => {
-  const router = useRouter()
-  const { token } = router.query
-  const [error, setError] = React.useState()
-  const [resetPassword, { data, loading }] = useResetPasswordMutation({
-    fetchPolicy: 'no-cache',
-  })
+  const {
+    formik,
+    data,
+    loading,
+    error,
+    handleChange,
+    token,
+  } = useResetPasswordForm()
   const passwordReset = get(data, 'resetPassword', false)
-
-  const formik = useFormik({
-    initialValues: {
-      password: '',
-      confirmPassword: '',
-    },
-    validationSchema: resetPasswordSchema,
-    onSubmit: async (values: any): Promise<void> => {
-      try {
-        await resetPassword({ variables: { ...values, token } })
-      } catch (error) {
-        setError(error)
-      }
-    },
-  })
 
   const rulesElements = passwordRules.map((rule: string, index: number) => {
     const password = get(formik, 'values.password')
@@ -84,12 +56,6 @@ const ResetPassword: NextPage = () => {
     'confirmPassword',
     PASSWORD_MIN_LENGTH,
   )
-
-  const handleChange = (event: any) => {
-    setError(null)
-    formik.setFieldValue(event.target.name, event.target.value)
-    formik.handleChange(event)
-  }
 
   if (!token) {
     return <Error statusCode={404} />

@@ -8,6 +8,7 @@ import useRegisterForm from 'hooks/useRegisterForm'
 import { FormWrapper } from 'components/form/wrapper'
 import { LoadingButton } from 'components/button'
 import { withApollo } from 'lib/withApollo'
+import { FormError } from 'components/form/error'
 
 const Register: NextPage = () => {
   const { formik, data, loading, error, handleChange } = useRegisterForm()
@@ -28,6 +29,7 @@ const Register: NextPage = () => {
             Create an account
           </p>
           <form onSubmit={formik.handleSubmit}>
+            {error && <FormError error={error} />}
             <div className='mb-4'>
               <FormLabel htmlFor='name'>Name</FormLabel>
               <input
