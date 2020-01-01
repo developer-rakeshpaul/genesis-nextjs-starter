@@ -1,48 +1,20 @@
-import { NextPage } from 'next'
-import { object, string } from 'yup'
-import Link from 'next/link'
 import React from 'react'
-import { LoadingButton } from 'components/button'
-import { withApollo } from 'lib/withApollo'
-import Layout from 'layout/Layout'
-import { withAuthUser } from 'lib/withAuthUser'
-import { useFormik } from 'formik'
-import { useForgotPasswordMutation } from 'lib/api-graphql'
+import { NextPage } from 'next'
+import Link from 'next/link'
 import get from 'lodash.get'
-import useFormInputStyles from 'hooks/useFormInputStyles'
-import { FormWrapper } from 'components/form/wrapper'
 
-export const forgotPassordSchema = object().shape({
-  email: string()
-    .email('Please enter a valid email.')
-    .required('A valid email is required.'),
-})
+import { LoadingButton } from 'components/button'
+import { FormWrapper } from 'components/form/wrapper'
+import useForgotPasswordForm from 'hooks/useForgotPasswordForm'
+import useFormInputStyles from 'hooks/useFormInputStyles'
+import Layout from 'layout/Layout'
+import { withApollo } from 'lib/withApollo'
+import { withAuthUser } from 'lib/withAuthUser'
 
 const ForgotPassword: NextPage = () => {
-  const [error, setError] = React.useState()
-  const [forgotPassword, { data, loading }] = useForgotPasswordMutation({
-    fetchPolicy: 'no-cache',
-  })
+  const { formik, data, loading, error, handleChange } = useForgotPasswordForm()
   const resetLinkSend = get(data, 'forgotPassword', false)
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-    },
-    validationSchema: forgotPassordSchema,
-    onSubmit: async (values: any): Promise<void> => {
-      try {
-        await forgotPassword({ variables: values })
-      } catch (error) {
-        setError(error)
-      }
-    },
-  })
   const className = useFormInputStyles(formik, 'email')
-  const handleChange = (event: any) => {
-    setError(null)
-    formik.setFieldValue(event.target.name, event.target.value)
-    formik.handleChange(event)
-  }
 
   return (
     <Layout title='Forgot Password | Genesis'>
@@ -76,8 +48,8 @@ const ForgotPassword: NextPage = () => {
               )}
 
               {data && (error || !resetLinkSend) && (
-                <p className='text-red-700 text-sm leading-tight'>
-                  Error sending reset password instructions. Please check the
+                <p className='text-red-700 text-sm text-center leading-tight'>
+                  Unable to send password reset instructions. Please check the
                   email and retry!
                 </p>
               )}

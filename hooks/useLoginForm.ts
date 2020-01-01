@@ -1,36 +1,64 @@
-import { FormikValues, useFormik } from 'formik'
+import React from 'react'
+import { setAccessToken } from 'lib/accessToken'
+import { useLoginMutation } from 'lib/api-graphql'
+import get from 'lodash.get'
+import { useRouter } from 'next/router'
+import { useAuthUser } from 'store'
+import { emailSchema } from 'utils/schema'
 import { object, string } from 'yup'
+import { LoginMutationVariables } from './../lib/api-graphql'
+import useForm from './useForm'
 
 interface LoginFormProps {
   email: string
   password: string
-  remember: boolean
 }
 
-const defaultInitialValues: LoginFormProps = {
+const initialValues: LoginFormProps = {
   email: '',
   password: '',
-  remember: false,
 }
 
-const DefaultLoginSchema = object().shape({
-  password: string().required('Password is required'),
-  email: string()
-    .email('Invalid email')
-    .required('Email is required'),
+const validationSchema = object().shape({
+  password: string().required('A password is required to login'),
+  email: emailSchema,
 })
 
-function useLoginForm<T extends FormikValues>({
-  initialValues = defaultInitialValues,
-  validationSchema = DefaultLoginSchema,
-  onSubmit,
-}: T) {
-  const formik = useFormik({
+function useLoginForm() {
+  const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
+  const [loginMutation, { data }] = useLoginMutation()
+  const setUser = useAuthUser(store => store.setUser)
+
+  const { formik, error, setError, handleChange } = useForm({
     initialValues,
     validationSchema,
-    onSubmit,
+    onSubmit: async (variables: LoginMutationVariables) => {
+      try {
+        setLoading(true)
+        const response = await loginMutation({
+          variables,
+        })
+
+        const { token, user } = get(response, 'data.login', {})
+        if (token) {
+          setAccessToken(token)
+          setUser(user)
+        }
+        const redirect = get(router, 'query.redirect')
+        setLoading(false)
+        if (redirect) {
+          router.replace(redirect)
+        } else {
+          router.replace('/dashboard')
+        }
+      } catch (e) {
+        setLoading(false)
+        setError(e)
+      }
+    },
   })
-  return { formik }
+  return { formik, data, loading, error, setError, handleChange }
 }
 
 export default useLoginForm
