@@ -10,6 +10,7 @@ import Layout from 'layout/Layout'
 const Confirm: NextPage = () => {
   const router = useRouter()
   const [confirmUser, { data, loading, error }] = useConfirmUserMutation()
+  const userConfirmed = get(data, 'data.confirm')
 
   React.useEffect(() => {
     const token = get(router, 'query.token', null)
@@ -17,8 +18,8 @@ const Confirm: NextPage = () => {
       // You can await here
       await confirmUser({
         variables: {
-          token
-        }
+          token,
+        },
       })
       // ...
     }
@@ -30,8 +31,8 @@ const Confirm: NextPage = () => {
     <Layout title='Confirm Sign Up | Genesis'>
       <section className='h-full flex-col self-center justify-center items-center'>
         <div className='w-full text-center mx-auto'>
-          {!loading && <Loader />}
-          {get(data, 'data.confirm') && (
+          {loading && <Loader />}
+          {data && userConfirmed && (
             <>
               <div className='text-gray-700 text-2xl font-normal leading-tight'>
                 <i className='lni-thumbs-up text-4xl mr-2 leading-loose' />

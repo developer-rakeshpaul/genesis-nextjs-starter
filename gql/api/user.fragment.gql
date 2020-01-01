@@ -3,5 +3,6 @@ fragment UserInfo on User {
   name
   email
   role
+  status
   lastLoginAt
 }

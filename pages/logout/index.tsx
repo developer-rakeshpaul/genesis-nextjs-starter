@@ -4,7 +4,6 @@ import { withApollo } from 'lib/withApollo'
 import Layout from 'layout/Layout'
 import Loader from 'components/loader'
 import { useLogoutMutation } from 'lib/api-graphql'
-import get from 'lodash.get'
 import { logout } from 'lib/withAuthSync'
 import { useAuthUser } from 'store'
 
@@ -15,16 +14,14 @@ const Logout: NextPage = () => {
   React.useEffect(() => {
     async function handleLogout() {
       try {
-        const response = await logoutMutation({
+        await logoutMutation({
           fetchPolicy: 'no-cache',
         })
-        if (get(response, 'data.logout', false)) {
-          logout()
-        }
         setUser(null)
-      } catch (error) {
         logout()
+      } catch (error) {
         setUser(null)
+        logout()
       }
     }
     handleLogout()

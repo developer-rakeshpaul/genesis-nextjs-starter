@@ -238,7 +238,7 @@ export type SignupMutation = { __typename?: 'Mutation' } & {
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
   User,
-  'id' | 'name' | 'email' | 'role' | 'lastLoginAt'
+  'id' | 'name' | 'email' | 'role' | 'status' | 'lastLoginAt'
 >
 
 export const UserInfoFragmentDoc = gql`
@@ -247,6 +247,7 @@ export const UserInfoFragmentDoc = gql`
     name
     email
     role
+    status
     lastLoginAt
   }
 `

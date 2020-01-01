@@ -17,15 +17,16 @@ import { FormWrapper } from 'components/form/wrapper'
 
 const Login: NextPage = () => {
   const router = useRouter()
-  const [loginMutation, { error, loading }] = useLoginMutation()
+  const [loading, setLoading] = React.useState(false)
+  const [loginMutation, { error }] = useLoginMutation()
   const setUser = useAuthUser(store => store.setUser)
 
   const onSubmit = async (variables: LoginMutationVariables) => {
     try {
+      setLoading(true)
       const response = await loginMutation({
         variables,
       })
-
       const { token, user } = get(response, 'data.login', {})
       if (token) {
         setAccessToken(token)
@@ -38,6 +39,7 @@ const Login: NextPage = () => {
         Router.replace('/dashboard')
       }
     } catch (e) {
+      setLoading(false)
       console.error(e)
     }
   }
@@ -128,9 +130,7 @@ const Login: NextPage = () => {
         <p className='mt-4 text-center text-gray-500 text-xs'>
           Not a member yet?
           <Link href='/register'>
-            <a
-              href='/register'
-              className='ml-2 text-blue-700 hover:text-blue-500'>
+            <a className='ml-2 text-blue-700 hover:text-blue-500'>
               Create account
             </a>
           </Link>
