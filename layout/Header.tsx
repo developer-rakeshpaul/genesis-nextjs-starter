@@ -24,10 +24,9 @@ const Header: React.FC = () => {
     //   </h1>
     //   {!user && router.pathname !== '/login' && <SignInButton />}
     // </nav>
-    <div className='bg-gray-100'>
-      <div className='mx-auto px-4 '>
-        <div className='flex items-center md:justify-between py-4 relative'>
-          {/* <div className='w-1/4 md:hidden'>
+    <header className='w-full mx-auto bg-gray-100 px-4'>
+      <div className='flex items-center md:justify-between py-3 relative'>
+        {/* <div className='w-1/4 md:hidden'>
             <svg
               className='fill-current text-black h-8 w-8'
               xmlns='http://www.w3.org/2000/svg'
@@ -36,23 +35,22 @@ const Header: React.FC = () => {
               <path d='M16.4 9H3.6c-.552 0-.6.447-.6 1 0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1 0-.553-.048-1-.6-1zm0 4H3.6c-.552 0-.6.447-.6 1 0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1 0-.553-.048-1-.6-1zM3.6 7h12.8c.552 0 .6-.447.6-1 0-.553-.048-1-.6-1H3.6c-.552 0-.6.447-.6 1 0 .553.048 1 .6 1z' />
             </svg>
           </div> */}
-          <div className='w-1/2 md:w-auto text-blue-800 text-2xl font-medium'>
-            <Link href={user ? '/dashboard' : '/'}>
-              <a href={user ? '/dashboard' : '/'}>
-                <span className='text-blue-900 font-light text-2xl'>
-                  &Xi; &nbsp;
-                </span>
-                Genesis
-              </a>
-            </Link>
-          </div>
-          <div className='w-1/2 md:w-auto md:flex text-right'>
-            {!user && router.pathname !== '/login' && <SignInButton />}
-            {user && <Menu />}
-          </div>
+        <div className='w-1/2 md:w-auto text-blue-800 text-2xl font-medium'>
+          <Link href={user ? '/dashboard' : '/'}>
+            <a href={user ? '/dashboard' : '/'}>
+              <span className='text-blue-900 font-light text-2xl'>
+                &Xi; &nbsp;
+              </span>
+              Genesis
+            </a>
+          </Link>
+        </div>
+        <div className='w-1/2 md:w-auto md:flex text-right'>
+          {!user && router.pathname !== '/login' && <SignInButton />}
+          {user && <Menu />}
         </div>
       </div>
-    </div>
+    </header>
   )
 }
 

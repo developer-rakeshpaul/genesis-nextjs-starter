@@ -1,11 +1,13 @@
 import { confirmPasswordSchema } from './../utils/schema'
-import { useRouter } from 'next/router'
-import { object } from 'yup'
+import { object, string } from 'yup'
 import { passwordSchema } from 'utils/schema'
-import { useResetPasswordMutation } from 'lib/api-graphql'
+import { useChangePasswordMutation } from 'lib/api-graphql'
 import useForm from './useForm'
 
 const validationSchema = object().shape({
+  currentPassword: string().required(
+    'Your current password is required to set new one ',
+  ),
   password: passwordSchema,
   confirmPassword: confirmPasswordSchema,
   // string().when('password', {
@@ -14,29 +16,29 @@ const validationSchema = object().shape({
   // }),
 })
 
-function useResetPasswordForm() {
-  const router = useRouter()
-  const { token } = router.query
-  const [resetPassword, { data, loading }] = useResetPasswordMutation({
+function useChangePasswordForm() {
+  const [changePassword, { data, loading }] = useChangePasswordMutation({
     fetchPolicy: 'no-cache',
   })
 
   const { formik, error, setError, handleChange } = useForm({
     initialValues: {
+      currentPassword: '',
       password: '',
       confirmPassword: '',
     },
     validationSchema,
     onSubmit: async (values: any): Promise<void> => {
       try {
-        await resetPassword({ variables: { ...values, token } })
+        await changePassword({ variables: { ...values } })
       } catch (error) {
+        console.log(error)
         setError(error)
       }
     },
   })
 
-  return { formik, data, loading, error, setError, handleChange, token }
+  return { formik, data, loading, error, setError, handleChange }
 }
 
-export default useResetPasswordForm
+export default useChangePasswordForm

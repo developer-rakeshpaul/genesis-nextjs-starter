@@ -1,14 +1,12 @@
 import React from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import FormLabel from 'components/form/label'
+import { FormError, FormLabel, FormWrapper } from 'components/form'
 import Layout from 'layout/Layout'
-import useFormInputStyles from 'hooks/useFormInputStyles'
+import { useFormInputStyles } from 'hooks/useFormInputStyles'
 import useRegisterForm from 'hooks/useRegisterForm'
-import { FormWrapper } from 'components/form/wrapper'
 import { LoadingButton } from 'components/button'
 import { withApollo } from 'lib/withApollo'
-import { FormError } from 'components/form/error'
 import get from 'lodash.get'
 
 const Register: NextPage = () => {

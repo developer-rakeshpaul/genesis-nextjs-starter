@@ -29,7 +29,7 @@ const Logout: NextPage = () => {
 
   return (
     <Layout>
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-col w-full items-center justify-center'>
         <p className='text-l text-blue-800 mb-2'>Logging you out</p>
         <Loader className='' />
       </div>

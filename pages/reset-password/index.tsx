@@ -4,9 +4,8 @@ import Error from 'next/error'
 import Link from 'next/link'
 import React from 'react'
 import { LoadingButton } from 'components/button'
-import { FormError } from 'components/form/error'
-import FormLabel from 'components/form/label'
-import useFormInputStyles from 'hooks/useFormInputStyles'
+import { FormError, FormLabel } from 'components/form'
+import { useFormInputStyles } from 'hooks/useFormInputStyles'
 import useResetPasswordForm from 'hooks/useResetPasswordForm'
 import Layout from 'layout/Layout'
 import { withApollo } from 'lib/withApollo'
@@ -119,6 +118,11 @@ const ResetPassword: NextPage = () => {
                           value={formik.values.password}
                           placeholder='Min. 6 characters'
                         />
+                        {formik.touched.password && formik.errors.password && (
+                          <div className='mt-1 text-red-500 text-xs italic'>
+                            {formik.errors.password}
+                          </div>
+                        )}
                       </div>
                       <div className='mb-4'>
                         <FormLabel htmlFor='confirmPassword'>
@@ -132,8 +136,7 @@ const ResetPassword: NextPage = () => {
                           value={formik.values.confirmPassword}
                           placeholder='Confirm Password'
                         />
-                        {formik.values.confirmPassword.length >=
-                          PASSWORD_MIN_LENGTH &&
+                        {formik.touched.confirmPassword &&
                           formik.errors.confirmPassword && (
                             <div className='mt-1 text-red-500 text-xs italic'>
                               {formik.errors.confirmPassword}

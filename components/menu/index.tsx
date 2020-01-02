@@ -29,9 +29,8 @@ const Menu: React.FC = () => {
       </div>
       {open && (
         <div
-          className='bg-white max-w-md mx-auto rounded overflow-hidden shadow-lg absolute right-0'
-          style={{ top: '54px' }}
-        >
+          className='bg-white max-w-md mx-auto rounded overflow-hidden shadow-lg absolute right-0 z-20'
+          style={{ top: '54px' }}>
           <div className='text-center p-6  border-b'>
             <img
               className='h-24 w-24 rounded-full mx-auto'
@@ -44,8 +43,7 @@ const Menu: React.FC = () => {
               <Link href='/account'>
                 <a
                   href='/account'
-                  className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700'
-                >
+                  className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700'>
                   Manage your Account
                 </a>
               </Link>
@@ -80,8 +78,7 @@ const Menu: React.FC = () => {
               <Link href='/logout'>
                 <a
                   href='/logout'
-                  className='border rounded py-2 px-4 text-xs font-semibold text-gray-70'
-                >
+                  className='border rounded py-2 px-4 text-xs font-semibold text-gray-70'>
                   Sign out
                 </a>
               </Link>

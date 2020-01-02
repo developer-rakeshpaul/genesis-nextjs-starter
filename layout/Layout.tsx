@@ -14,7 +14,7 @@ const Layout: React.FunctionComponent<Props> = ({
   title = 'Genesis',
 }) => {
   return (
-    <div className='bg-gray-200 flex flex-col justify-between h-full min-h-screen'>
+    <div className='bg-gray-200 min-h-screen flex flex-col overflow-hidden'>
       <Head>
         <title>{title}</title>
         <meta charSet='utf-8' />
@@ -29,7 +29,7 @@ const Layout: React.FunctionComponent<Props> = ({
         />
       </Head>
       <Header />
-      <div className='block'>{children}</div>
+      <main className='flex-grow flex items-center'>{children}</main>
       <Footer />
     </div>
   )

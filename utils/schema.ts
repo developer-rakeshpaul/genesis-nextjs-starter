@@ -1,4 +1,4 @@
-import { string } from 'yup'
+import { string, ref } from 'yup'
 
 export const PASSWORD_MIN_LENGTH = 6
 export const passwordRules = [
@@ -10,6 +10,7 @@ export const passwordRules = [
 const [uc, numeric, min] = passwordRules
 
 export const passwordSchema = string()
+  .required('Please provide a password')
   .test('uc', uc, val => {
     return /[A-Z]/.test(val)
   })
@@ -17,8 +18,11 @@ export const passwordSchema = string()
     return /[0-9]/.test(val)
   })
   .min(PASSWORD_MIN_LENGTH, min)
-  .required('Please provide a password')
 
 export const emailSchema = string()
   .email('Please enter a valid email')
   .required('A valid email is required to proceed')
+
+export const confirmPasswordSchema = string()
+  .oneOf([ref('password'), null], 'Passwords do not match')
+  .required('Password confirm is required')
