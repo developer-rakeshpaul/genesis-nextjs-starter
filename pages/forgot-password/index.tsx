@@ -6,15 +6,16 @@ import get from 'lodash.get'
 import { LoadingButton } from 'components/button'
 import { FormWrapper } from 'components/form/wrapper'
 import useForgotPasswordForm from 'hooks/useForgotPasswordForm'
-import { useFormInputStyles } from 'hooks/useFormInputStyles'
+import { useFormInputState } from 'hooks/useFormInput'
 import Layout from 'layout/Layout'
 import { withApollo } from 'lib/withApollo'
 import { withAuthUser } from 'lib/withAuthUser'
+import { Input } from 'components/form'
 
 const ForgotPassword: NextPage = () => {
   const { formik, data, loading, error, handleChange } = useForgotPasswordForm()
   const resetLinkSend = get(data, 'forgotPassword', false)
-  const className = useFormInputStyles(formik, 'email')
+  const emailState = useFormInputState(formik, 'email')
 
   return (
     <Layout title='Forgot Password | Genesis'>
@@ -55,10 +56,10 @@ const ForgotPassword: NextPage = () => {
               )}
               <form onSubmit={formik.handleSubmit}>
                 <div className='mt-4 mb-6'>
-                  <input
-                    className={className}
+                  <Input
                     type='email'
                     name='email'
+                    state={emailState}
                     placeholder='ex. johndoe@somemail.com'
                     onChange={handleChange}
                     value={formik.values.email}

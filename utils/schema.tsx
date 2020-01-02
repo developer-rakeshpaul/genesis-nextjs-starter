@@ -1,3 +1,4 @@
+import React from 'react'
 import { string, ref } from 'yup'
 
 export const PASSWORD_MIN_LENGTH = 6
@@ -26,3 +27,27 @@ export const emailSchema = string()
 export const confirmPasswordSchema = string()
   .oneOf([ref('password'), null], 'Passwords do not match')
   .required('Password confirm is required')
+
+export const buildRules = (password: string) => {
+  const rules = passwordRules.map((rule: string, index: number) => {
+    const [uc, numeric, min] = passwordRules
+
+    let className = 'text-sm text-gray-700'
+    if (password) {
+      if (
+        (rule === uc && /[A-Z]/.test(password)) ||
+        (rule === numeric && /[0-9]/.test(password)) ||
+        (rule === min && password.length >= PASSWORD_MIN_LENGTH)
+      ) {
+        className = 'text-sm line-through text-green-500'
+      }
+    }
+
+    return (
+      <li className={className} key={index}>
+        {rule}
+      </li>
+    )
+  })
+  return rules
+}

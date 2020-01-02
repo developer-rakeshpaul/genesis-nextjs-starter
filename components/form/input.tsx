@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
-// import { INPUT_STATE } from 'hooks/useFormInputStyles'
+import { INPUT_STATE, getInputStyles } from 'hooks/useFormInput'
 
-// interface InputProps extends React.HTMLProps<HTMLInputElement> {
-//   state: INPUT_STATE
-// }
+interface InputProps {
+  state?: INPUT_STATE
+}
 
 export const FormInput = styled.input`
   ${tw`appearance-none rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none border border-gray-400 focus:border-blue-300`}
@@ -25,3 +25,13 @@ export const ErrorInput = styled(FormInput)`
 export const DisabledInput = styled(FormInput)`
   ${tw`text-gray-400`}
 `
+
+export const Input: React.FC<InputProps &
+  React.HTMLProps<HTMLInputElement>> = ({ state, ...props }) => {
+  return (
+    <input
+      {...props}
+      className={getInputStyles(state || INPUT_STATE.DEFAULT)}
+    />
+  )
+}

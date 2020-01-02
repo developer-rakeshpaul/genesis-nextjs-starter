@@ -1,5 +1,5 @@
 import { LoadingButton } from 'components/button'
-import { FormError, FormLabel, FormWrapper } from 'components/form'
+import { Input, FormError, FormLabel, FormWrapper } from 'components/form'
 import useLoginForm from 'hooks/useLoginForm'
 import Layout from 'layout/Layout'
 import { withApollo } from 'lib/withApollo'
@@ -8,9 +8,20 @@ import { NextPage } from 'next'
 import Link from 'next/link'
 import React from 'react'
 import get from 'lodash.get'
+import { useFormInputState } from 'hooks/useFormInput'
+import { PASSWORD_MIN_LENGTH } from 'utils/schema'
 
 const Login: NextPage = () => {
   const { formik, loading, error, handleChange } = useLoginForm()
+
+  const passwordState = useFormInputState(
+    formik,
+    'password',
+    PASSWORD_MIN_LENGTH,
+  )
+
+  const emailState = useFormInputState(formik, 'email')
+
   return (
     <Layout title='Login | Genesis'>
       <FormWrapper>
@@ -25,10 +36,10 @@ const Login: NextPage = () => {
             {error && <FormError error={error} />}
             <div className='mt-2 mb-6'>
               <FormLabel htmlFor='email'>Email</FormLabel>
-              <input
+              <Input
                 name='email'
-                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='email'
+                state={emailState}
                 onChange={handleChange}
                 value={formik.values.email}
                 placeholder='ex. johndoe@somemail.com'
@@ -41,10 +52,10 @@ const Login: NextPage = () => {
             </div>
             <div className='mb-1'>
               <FormLabel htmlFor='password'>Password</FormLabel>
-              <input
+              <Input
                 name='password'
-                className='appearance-none border border-blue-400 hover:border-blue-600 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-blue-300 focus:placeholder-gray-500'
                 type='password'
+                state={passwordState}
                 onChange={handleChange}
                 value={formik.values.password}
                 placeholder={"don't you remember me"}

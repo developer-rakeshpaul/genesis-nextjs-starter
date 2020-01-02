@@ -1,9 +1,9 @@
 import React from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { FormError, FormLabel, FormWrapper } from 'components/form'
+import { FormError, FormLabel, FormWrapper, Input } from 'components/form'
 import Layout from 'layout/Layout'
-import { useFormInputStyles } from 'hooks/useFormInputStyles'
+import { useFormInputState } from 'hooks/useFormInput'
 import useRegisterForm from 'hooks/useRegisterForm'
 import { LoadingButton } from 'components/button'
 import { withApollo } from 'lib/withApollo'
@@ -12,9 +12,9 @@ import get from 'lodash.get'
 const Register: NextPage = () => {
   const { formik, data, loading, error, handleChange } = useRegisterForm()
 
-  const nameInputStyles = useFormInputStyles(formik, 'name', 2)
-  const emailInputStyles = useFormInputStyles(formik, 'email')
-  const passwordInputStyles = useFormInputStyles(formik, 'password', 6)
+  const nameInputState = useFormInputState(formik, 'name', 2)
+  const emailInputState = useFormInputState(formik, 'email')
+  const passwordInputState = useFormInputState(formik, 'password', 6)
   const { id, email, status }: any = get(data, 'signup', {})
   return (
     <Layout title='Create an Account | Genesis'>
@@ -47,8 +47,8 @@ const Register: NextPage = () => {
                 {error && <FormError error={error} />}
                 <div className='mb-4'>
                   <FormLabel htmlFor='name'>Name</FormLabel>
-                  <input
-                    className={nameInputStyles}
+                  <Input
+                    state={nameInputState}
                     type='text'
                     name='name'
                     placeholder='ex. John Doe'
@@ -63,8 +63,8 @@ const Register: NextPage = () => {
                 </div>
                 <div className='mb-4'>
                   <FormLabel htmlFor='email'>Email</FormLabel>
-                  <input
-                    className={emailInputStyles}
+                  <Input
+                    state={emailInputState}
                     type='email'
                     name='email'
                     placeholder='ex. johndoe@somemail.com'
@@ -79,8 +79,8 @@ const Register: NextPage = () => {
                 </div>
                 <div className='mb-4'>
                   <FormLabel htmlFor='password'>Password</FormLabel>
-                  <input
-                    className={passwordInputStyles}
+                  <Input
+                    state={passwordInputState}
                     type='password'
                     name='password'
                     placeholder='Min. 6 characters'
@@ -103,11 +103,9 @@ const Register: NextPage = () => {
                     </Link>
                     {' and '}
                     <Link href='/privacypolicy'>
-                      <a
-                        href='/privacypolicy'
-                        className='cursor-pointer ml-1 text-blue-700 hover:text-blue-500'>
+                      <span className='cursor-pointer ml-1 text-blue-700 hover:text-blue-500'>
                         privacy policy
-                      </a>
+                      </span>
                     </Link>
                   </p>
                 </div>

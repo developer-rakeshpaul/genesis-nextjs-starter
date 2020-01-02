@@ -15,7 +15,7 @@ const Account: NextPage = ({ user }: any) => {
 
   const getStyle = (val: Settings) => {
     if (val === setting) {
-      return 'p-2 pl-2 text-blue-500 border-l-4 border-red-600 cursor-pointer'
+      return 'p-2 pl-2 text-blue-500 border-l-4 border-blue-600 cursor-pointer'
     }
     return 'p-2 pl-3 text-blue-500 cursor-pointer'
   }

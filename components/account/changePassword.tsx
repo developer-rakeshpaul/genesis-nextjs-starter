@@ -1,50 +1,29 @@
 import React from 'react'
-import get from 'lodash.get'
-import { passwordRules, PASSWORD_MIN_LENGTH } from 'utils/schema'
+import { PASSWORD_MIN_LENGTH, buildRules } from 'utils/schema'
 import { LoadingButton } from 'components/button'
-import { FormLabel, FormError } from 'components/form'
-import { useFormInputStyles } from 'hooks/useFormInputStyles'
+import { Input, FormLabel, FormError } from 'components/form'
+import { useFormInputState } from 'hooks/useFormInput'
 import useChangePasswordForm from 'hooks/useChangePasswordForm'
+import get from 'lodash.get'
 // import { LoadingButton } from 'components/button'
 
 export const ChangePassword: React.FC<{}> = () => {
   const { formik, data, loading, error, handleChange } = useChangePasswordForm()
   // const passwordChanged = get(data, 'changePassword', false)
 
-  const rulesElements = passwordRules.map((rule: string, index: number) => {
-    const password = get(formik, 'values.password')
-    const [uc, numeric, min] = passwordRules
-
-    let className = 'text-sm text-gray-700'
-    if (password) {
-      if (
-        (rule === uc && /[A-Z]/.test(password)) ||
-        (rule === numeric && /[0-9]/.test(password)) ||
-        (rule === min && password.length >= PASSWORD_MIN_LENGTH)
-      ) {
-        className = 'text-sm line-through text-green-500'
-      }
-    }
-
-    return (
-      <li className={className} key={index}>
-        {rule}
-      </li>
-    )
-  })
-
-  const currentPasswordStyle = useFormInputStyles(
+  const currentPasswordState = useFormInputState(
     formik,
     'currentPassword',
     PASSWORD_MIN_LENGTH,
   )
 
-  const passwordStyle = useFormInputStyles(
+  const passwordState = useFormInputState(
     formik,
     'password',
     PASSWORD_MIN_LENGTH,
   )
-  const confirmPasswordStyle = useFormInputStyles(
+
+  const confirmPasswordState = useFormInputState(
     formik,
     'confirmPassword',
     PASSWORD_MIN_LENGTH,
@@ -62,7 +41,7 @@ export const ChangePassword: React.FC<{}> = () => {
                 Passwords must contain:
               </p>
               <ul className='list-disc list-inside mb-4'>
-                {passwordRules && rulesElements}
+                {buildRules(get(formik, 'values.password'))}
               </ul>
             </div>
             <div className='w-full'>
@@ -76,10 +55,10 @@ export const ChangePassword: React.FC<{}> = () => {
                   <FormLabel htmlFor='currentPassword'>
                     Current Password
                   </FormLabel>
-                  <input
+                  <Input
                     name='currentPassword'
-                    className={currentPasswordStyle}
                     type='password'
+                    state={currentPasswordState}
                     onChange={handleChange}
                     value={formik.values.currentPassword}
                     placeholder={"don't you remember me"}
@@ -93,10 +72,10 @@ export const ChangePassword: React.FC<{}> = () => {
                 </div>
                 <div className='mb-4'>
                   <FormLabel htmlFor='password'>New Password</FormLabel>
-                  <input
+                  <Input
                     name='password'
-                    className={passwordStyle}
                     type='password'
+                    state={passwordState}
                     onChange={handleChange}
                     value={formik.values.password}
                     placeholder={"don't forget me"}
@@ -111,10 +90,10 @@ export const ChangePassword: React.FC<{}> = () => {
                   <FormLabel htmlFor='confirmPassword'>
                     Confirm New Password
                   </FormLabel>
-                  <input
+                  <Input
                     name='confirmPassword'
-                    className={confirmPasswordStyle}
                     type='password'
+                    state={confirmPasswordState}
                     onChange={handleChange}
                     value={formik.values.confirmPassword}
                     placeholder='Confirm Password'

@@ -4,27 +4,35 @@ export enum INPUT_STATE {
   DEFAULT,
   VALID,
   ERROR,
+  DISABLED,
 }
 
-const getInputStyles = (type: INPUT_STATE) => {
+export const getInputStyles = (type: INPUT_STATE) => {
   const baseStyle =
     'appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none placeholder-gray-400 focus:placeholder-gray-500 border '
-  let inputBorder = ''
+  let style = ''
   switch (type) {
     case INPUT_STATE.VALID:
-      inputBorder = 'border-green-300 hover:border-green-400'
+      style = 'border-green-300 focus:border-green-400'
       break
     case INPUT_STATE.ERROR:
-      inputBorder = 'border-red-300 hover:border-red-400'
+      style = 'border-red-300 focus:border-red-400'
+      break
+    case INPUT_STATE.DISABLED:
+      style = 'text-gray-400'
       break
     default:
-      inputBorder = 'border-gray-400 hover:border-blue-400'
+      style = 'border-gray-400 focus:border-blue-400'
   }
 
-  return baseStyle + ' ' + inputBorder
+  return baseStyle + ' ' + style
 }
 
-export function useFormInputStyles(formik: any, field: string, minLength = 0) {
+export const useFormInputStyles = (
+  formik: any,
+  field: string,
+  minLength = 0,
+) => {
   const len: number = get(formik, `values.${field}.length`, 0)
   const error = get(formik, `errors.${field}`, '')
 
@@ -38,7 +46,11 @@ export function useFormInputStyles(formik: any, field: string, minLength = 0) {
   return className
 }
 
-export function useFormInputState(formik: any, field: string, minLength = 0) {
+export const useFormInputState = (
+  formik: any,
+  field: string,
+  minLength = 0,
+) => {
   const len: number = get(formik, `values.${field}.length`, 0)
   const error = get(formik, `errors.${field}`, '')
 

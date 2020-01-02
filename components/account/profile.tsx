@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormHint,
   TextArea,
-  FormInput,
+  Input,
 } from 'components/form'
 
 interface ProfileProps {
@@ -47,7 +47,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
           </div>
           <div className='mb-4'>
             <FormLabel htmlFor='name'>Name</FormLabel>
-            <FormInput
+            <Input
               type='text'
               name='name'
               placeholder='ex. John Doe'
