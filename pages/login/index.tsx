@@ -1,5 +1,11 @@
 import { LoadingButton } from 'components/button'
-import { Input, FormError, FormLabel, FormWrapper } from 'components/form'
+import {
+  Input,
+  FormError,
+  FormLabel,
+  FormWrapper,
+  Title,
+} from 'components/form'
 import useLoginForm from 'hooks/useLoginForm'
 import Layout from 'layout/Layout'
 import { withApollo } from 'lib/withApollo'
@@ -29,9 +35,7 @@ const Login: NextPage = () => {
               Login
             </h1> */}
         <div className='bg-white md:shadow-md md:rounded px-8 py-8'>
-          <p className='text-2xl font-bold text-gray-800  mb-4 md:mb-8'>
-            Login
-          </p>
+          <Title>Login</Title>
           <form onSubmit={formik.handleSubmit}>
             {error && <FormError error={error} />}
             <div className='mt-2 mb-6'>

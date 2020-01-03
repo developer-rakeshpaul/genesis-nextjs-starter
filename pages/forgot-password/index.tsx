@@ -10,7 +10,7 @@ import { useFormInputState } from 'hooks/useFormInput'
 import Layout from 'layout/Layout'
 import { withApollo } from 'lib/withApollo'
 import { withAuthUser } from 'lib/withAuthUser'
-import { Input } from 'components/form'
+import { Input, Title } from 'components/form'
 
 const ForgotPassword: NextPage = () => {
   const { formik, data, loading, error, handleChange } = useForgotPasswordForm()
@@ -38,9 +38,7 @@ const ForgotPassword: NextPage = () => {
           )}
           {(!data || !get(data, 'forgotPassword', false) || error) && (
             <>
-              <p className='text-2xl font-bold text-blue-500 mb-4 md:mb-8'>
-                Forgot Password
-              </p>
+              <Title>Forgot Password</Title>
               {!data && !resetLinkSend && !error && (
                 <p className='text-gray-600 text-sm leading-tight'>
                   We get it, stuff happens. Just enter your email address below
