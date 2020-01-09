@@ -10,7 +10,7 @@ export const getGraphqlUrl = () => {
 }
 
 export const getHasuraGraphqlUrl = () => {
-  return process.env.HASURA_URL || 'http://localhost:9090/v1/graphql'
+  return process.env.HASURA_URL || 'http://localhost:9091/v1/graphql'
 }
 
 export const isServer = typeof window === 'undefined'

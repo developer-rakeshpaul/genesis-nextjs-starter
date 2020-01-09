@@ -4,5 +4,6 @@ fragment UserInfo on User {
   email
   role
   status
+  bio
   lastLoginAt
 }

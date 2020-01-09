@@ -1,0 +1,19 @@
+mutation updateProfile($id: uuid!, $set: user_set_input) {
+  update_user(where: { id: { _eq: $id } }, _set: $set) {
+    affected_rows
+    returning {
+      email
+      name
+      bio
+    }
+  }
+}
+
+# Sample Query Variables
+# {
+#   "id": "",
+#   "set": {
+#     "bio": "",
+#     "name": ""
+#   }
+# }

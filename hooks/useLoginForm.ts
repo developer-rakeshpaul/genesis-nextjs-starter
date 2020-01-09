@@ -36,6 +36,7 @@ function useLoginForm() {
     onSubmit: async (variables: LoginMutationVariables) => {
       try {
         setLoading(true)
+        setError(null)
         const response = await loginMutation({
           variables,
         })
@@ -46,7 +47,7 @@ function useLoginForm() {
           setUser(user)
         }
         const redirect = get(router, 'query.redirect')
-        setLoading(false)
+        // setLoading(false)
         if (redirect) {
           router.replace(redirect)
         } else {

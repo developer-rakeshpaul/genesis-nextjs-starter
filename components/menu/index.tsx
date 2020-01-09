@@ -41,9 +41,9 @@ const Menu: React.FC = () => {
             <p className='text-sm text-gray-600'>{user.email}</p>
             <div className='mt-5'>
               <Link href='/account'>
-                <span className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700 cursor-pointer'>
+                <a className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700 cursor-pointer'>
                   Manage your Account
-                </span>
+                </a>
               </Link>
             </div>
           </div>
@@ -74,20 +74,24 @@ const Menu: React.FC = () => {
           <div className='border-b'>
             <div className='px-6 py-4 text-center'>
               <Link href='/logout'>
-                <span className='border rounded py-2 px-4 text-xs font-semibold text-gray-70 cursor-pointer'>
+                <a className='border rounded py-2 px-4 text-xs font-semibold text-gray-70 cursor-pointer'>
                   Sign out
-                </span>
+                </a>
               </Link>
             </div>
           </div>
 
           <div className='px-6 py-4'>
-            <span className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
-              Privacy Policy
-            </span>
-            <span className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
-              Terms of Service
-            </span>
+            <Link href='/privacypolicy'>
+              <a className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
+                Privacy Policy
+              </a>
+            </Link>
+            <Link href='/termsofservice'>
+              <a className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
+                Terms of Service
+              </a>
+            </Link>
           </div>
         </div>
         //   {/* <div className='hidden md:block md:flex md:items-center ml-2'>
