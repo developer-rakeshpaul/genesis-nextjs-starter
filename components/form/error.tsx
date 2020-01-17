@@ -1,7 +1,7 @@
 import React from 'react'
 import { ApolloError } from 'apollo-boost'
-import { head } from 'ramda'
 import get from 'lodash.get'
+import head from 'lodash.head'
 
 interface Props {
   error: ApolloError

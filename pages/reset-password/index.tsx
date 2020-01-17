@@ -4,7 +4,7 @@ import Error from 'next/error'
 import Link from 'next/link'
 import React from 'react'
 import { LoadingButton } from 'components/button'
-import { Input, FormError, FormLabel } from 'components/form'
+import { Input, FormError, FormLabel, Title } from 'components/form'
 import { useFormInputState } from 'hooks/useFormInput'
 import useResetPasswordForm from 'hooks/useResetPasswordForm'
 import Layout from 'layout/Layout'
@@ -66,9 +66,7 @@ const ResetPassword: NextPage = () => {
           )}
           {(!data || error) && (
             <>
-              <p className='text-2xl font-bold text-gray-800 mb-4 md:mb-8'>
-                Change your password
-              </p>
+              <Title>Change your password</Title>
               <div className='flex flex-col md:flex-row-reverse'>
                 <div className='flex flex-col md:w-1/2 md:ml-12'>
                   <p className='font-bold text-gray-800'>

@@ -1,7 +1,13 @@
 import React from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { FormError, FormLabel, FormWrapper, Input } from 'components/form'
+import {
+  FormError,
+  FormLabel,
+  FormWrapper,
+  Input,
+  Title,
+} from 'components/form'
 import Layout from 'layout/Layout'
 import { useFormInputState } from 'hooks/useFormInput'
 import useRegisterForm from 'hooks/useRegisterForm'
@@ -40,9 +46,7 @@ const Register: NextPage = () => {
 
           {(!data || error) && (
             <>
-              <p className='text-2xl font-bold text-gray-800 mb-4 md:mb-8'>
-                Create an account
-              </p>
+              <Title>Create an account</Title>
               <form onSubmit={formik.handleSubmit}>
                 {error && <FormError error={error} />}
                 <div className='mb-4'>

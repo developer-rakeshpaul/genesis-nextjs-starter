@@ -107,6 +107,7 @@ export type User = {
   username?: Maybe<Scalars['String']>
   email: Scalars['String']
   phone?: Maybe<Scalars['String']>
+  bio?: Maybe<Scalars['String']>
   googleId?: Maybe<Scalars['String']>
   facebookId?: Maybe<Scalars['String']>
   twitterId?: Maybe<Scalars['String']>
@@ -238,7 +239,7 @@ export type SignupMutation = { __typename?: 'Mutation' } & {
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
   User,
-  'id' | 'name' | 'email' | 'role' | 'status' | 'lastLoginAt'
+  'id' | 'name' | 'email' | 'role' | 'status' | 'bio' | 'lastLoginAt'
 >
 
 export const UserInfoFragmentDoc = gql`
@@ -248,6 +249,7 @@ export const UserInfoFragmentDoc = gql`
     email
     role
     status
+    bio
     lastLoginAt
   }
 `

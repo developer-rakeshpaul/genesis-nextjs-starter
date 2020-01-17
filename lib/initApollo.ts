@@ -77,11 +77,13 @@ function createApolloClient(
 
   const authLink = setContext((_, { headers }) => {
     const token = isServer ? serverAccessToken : getAccessToken()
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `bearer ${token}` : '',
-      },
+    if (token) {
+      return {
+        headers: {
+          ...headers,
+          authorization: token ? `Bearer ${token}` : '',
+        },
+      }
     }
   })
 

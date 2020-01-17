@@ -1,5 +1,4 @@
 import React from 'react'
-import { useFormik } from 'formik'
 import { LoadingButton } from 'components/button'
 import { User } from 'lib/api-graphql'
 import {
@@ -9,18 +8,15 @@ import {
   TextArea,
   Input,
 } from 'components/form'
+import useUpdateProfileForm from 'hooks/useUpdateProfileForm'
 
 interface ProfileProps {
   user: User
 }
 
 export const Profile: React.FC<ProfileProps> = ({ user }) => {
-  const formik = useFormik({
-    initialValues: user,
-    onSubmit: async (data: any): Promise<void> => {
-      console.log(data)
-    },
-  })
+  const { formik, loading, handleChange } = useUpdateProfileForm()
+
   return (
     <>
       <h1 className='text-2xl my-2 text-left text-gray-800'>Public Profile</h1>
@@ -51,24 +47,26 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
               type='text'
               name='name'
               placeholder='ex. John Doe'
-              onChange={formik.handleChange}
+              onChange={handleChange}
               value={formik.values.name}
             />
-            <FormHint>
-              Your name may appear around Genesis where you contribute or are
-              mentioned. You can remove it at any time.
-            </FormHint>
             {formik.touched.name && formik.errors.name && (
               <div className='mt-1 text-red-500 text-xs italic'>
                 {formik.errors.name}
               </div>
             )}
+            <FormHint>
+              Your name may appear around Genesis where you contribute or are
+              mentioned. You can remove it at any time.
+            </FormHint>
           </div>
           <div className='mb-4'>
             <FormLabel htmlFor='bio'>Bio</FormLabel>
             <TextArea
               name='bio'
               placeholder='Tell us a little bit about yourself'
+              onChange={handleChange}
+              value={formik.values.bio}
             />
             {/* {formik.touched.email && formik.errors.email && (
                   <div className='mt-1 text-red-500 text-xs italic'>
@@ -82,8 +80,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
               type='email'
               name='email'
               disabled
-              placeholder='ex. johndoe@somemail.com'
-              onChange={formik.handleChange}
+              placeholder='ex. johndoe@email.com'
               value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email && (
@@ -96,7 +93,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <LoadingButton
               className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none'
               type='submit'
-              // loading={loading}
+              loading={loading}
               disabled={formik.isSubmitting}>
               Update
             </LoadingButton>

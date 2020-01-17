@@ -1,3 +1,5 @@
+import React from 'react'
+import { ChangePasswordMutationVariables } from './../lib/api-graphql'
 import { confirmPasswordSchema } from './../utils/schema'
 import { object, string } from 'yup'
 import { passwordSchema } from 'utils/schema'
@@ -17,7 +19,8 @@ const validationSchema = object().shape({
 })
 
 function useChangePasswordForm() {
-  const [changePassword, { data, loading }] = useChangePasswordMutation({
+  const [loading, setLoading] = React.useState(false)
+  const [changePassword, { data }] = useChangePasswordMutation({
     fetchPolicy: 'no-cache',
   })
 
@@ -28,11 +31,17 @@ function useChangePasswordForm() {
       confirmPassword: '',
     },
     validationSchema,
-    onSubmit: async (values: any): Promise<void> => {
+    onSubmit: async ({
+      password,
+      currentPassword,
+    }: ChangePasswordMutationVariables): Promise<void> => {
       try {
-        await changePassword({ variables: { ...values } })
+        setLoading(true)
+        setError(null)
+        await changePassword({ variables: { password, currentPassword } })
+        setLoading(false)
       } catch (error) {
-        console.log(error)
+        setLoading(false)
         setError(error)
       }
     },
