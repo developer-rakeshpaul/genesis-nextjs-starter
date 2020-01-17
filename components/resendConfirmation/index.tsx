@@ -9,7 +9,7 @@ interface ConfirmProps {
 const ResendConfirmation: React.FC<ConfirmProps> = ({ email }) => {
   const [
     resendConfirmEmailMutation,
-    { data, loading, error },
+    { loading },
   ] = useResendConfirmEmailMutation({
     variables: {
       email, // value for 'email'
@@ -18,9 +18,11 @@ const ResendConfirmation: React.FC<ConfirmProps> = ({ email }) => {
 
   const handleResendConfirmation = async () => {
     try {
-      await resendConfirmEmailMutation()
-    } catch (error) {}
-    console.log(data, error)
+      const response = await resendConfirmEmailMutation()
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

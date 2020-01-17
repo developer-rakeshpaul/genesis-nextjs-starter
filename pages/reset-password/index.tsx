@@ -87,6 +87,7 @@ const ResetPassword: NextPage = () => {
                       <FormLabel htmlFor='password'>New Password</FormLabel>
                       <Input
                         name='password'
+                        id='password'
                         type='password'
                         state={passwordState}
                         onChange={handleChange}
@@ -105,6 +106,7 @@ const ResetPassword: NextPage = () => {
                       </FormLabel>
                       <Input
                         name='confirmPassword'
+                        id='confirmPassword'
                         type='password'
                         state={confirmPasswordState}
                         onChange={handleChange}

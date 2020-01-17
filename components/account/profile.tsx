@@ -30,6 +30,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <div className='text-center relative'>
               <input
                 type='file'
+                id='pic'
                 name='pic'
                 accept='image/*'
                 className='appearance-none rounded w-32 h-32 m-auto bg-red-800 absolute top-0 left-0 right-0 cursor-pointer z-0 outline-none opacity-0'
@@ -46,6 +47,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <Input
               type='text'
               name='name'
+              id='name'
               placeholder='ex. John Doe'
               onChange={handleChange}
               value={formik.values.name}
@@ -64,6 +66,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <FormLabel htmlFor='bio'>Bio</FormLabel>
             <TextArea
               name='bio'
+              id='bio'
               placeholder='Tell us a little bit about yourself'
               onChange={handleChange}
               value={formik.values.bio}
@@ -79,6 +82,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <DisabledInput
               type='email'
               name='email'
+              id='email'
               disabled
               placeholder='ex. johndoe@email.com'
               value={formik.values.email}

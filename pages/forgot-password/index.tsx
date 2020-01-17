@@ -57,6 +57,7 @@ const ForgotPassword: NextPage = () => {
                   <Input
                     type='email'
                     name='email'
+                    id='email'
                     state={emailState}
                     placeholder='ex. johndoe@somemail.com'
                     onChange={handleChange}

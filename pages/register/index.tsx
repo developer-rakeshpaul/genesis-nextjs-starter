@@ -55,6 +55,7 @@ const Register: NextPage = () => {
                     state={nameInputState}
                     type='text'
                     name='name'
+                    id='name'
                     placeholder='ex. John Doe'
                     onChange={handleChange}
                     value={formik.values.name}
@@ -70,6 +71,7 @@ const Register: NextPage = () => {
                   <Input
                     state={emailInputState}
                     type='email'
+                    id='email'
                     name='email'
                     placeholder='ex. johndoe@somemail.com'
                     onChange={handleChange}

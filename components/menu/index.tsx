@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAuthUser } from 'store'
-import Link from 'next/link'
 import useEventListener from '@use-it/event-listener'
 
 const Menu: React.FC = () => {
@@ -17,15 +16,28 @@ const Menu: React.FC = () => {
     }
   })
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (!open && e.key === 'Enter') {
+      setToggle(true)
+    } else {
+      setToggle(false)
+    }
+  }
+
   return (
     <>
       <div className='relative'>
-        <img
+        <div
+          role='button'
+          tabIndex={0}
           className='inline-block h-8 w-8 rounded-full cursor-pointer border border-gray-300'
-          src={`https://ui-avatars.com/api/?rounded=true&name=${user.name}`}
           onClick={() => setToggle(!open)}
-          alt=''
-        />
+          onKeyPress={handleKeyPress}>
+          <img
+            src={`https://ui-avatars.com/api/?rounded=true&name=${user.name}`}
+            alt={user.name}
+          />
+        </div>
       </div>
       {open && (
         <div
@@ -40,11 +52,11 @@ const Menu: React.FC = () => {
             <p className='pt-2 text-lg font-semibold'>{user.name}</p>
             <p className='text-sm text-gray-600'>{user.email}</p>
             <div className='mt-5'>
-              <Link href='/account'>
-                <a className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700 cursor-pointer'>
-                  Manage your Account
-                </a>
-              </Link>
+              <a
+                href='/account'
+                className='border rounded-full py-2 px-4 text-xs font-semibold text-gray-700 cursor-pointer'>
+                Manage your Account
+              </a>
             </div>
           </div>
           {/* <div className='border-b'>
@@ -73,25 +85,25 @@ const Menu: React.FC = () => {
           </div> */}
           <div className='border-b'>
             <div className='px-6 py-4 text-center'>
-              <Link href='/logout'>
-                <a className='border rounded py-2 px-4 text-xs font-semibold text-gray-70 cursor-pointer'>
-                  Sign out
-                </a>
-              </Link>
+              <a
+                href='/logout'
+                className='border rounded py-2 px-4 text-xs font-semibold text-gray-70 cursor-pointer'>
+                Sign out
+              </a>
             </div>
           </div>
 
           <div className='px-6 py-4'>
-            <Link href='/privacypolicy'>
-              <a className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
-                Privacy Policy
-              </a>
-            </Link>
-            <Link href='/termsofservice'>
-              <a className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
-                Terms of Service
-              </a>
-            </Link>
+            <a
+              href='/privacypolicy'
+              className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
+              Privacy Policy
+            </a>
+            <a
+              href='/termsofservice'
+              className='inline-block rounded-full px-3 py-1 text-xs font-semibold text-gray-600 mr-2'>
+              Terms of Service
+            </a>
           </div>
         </div>
         //   {/* <div className='hidden md:block md:flex md:items-center ml-2'>

@@ -69,6 +69,7 @@ export const ChangePassword: React.FC<{}> = () => {
                   </FormLabel>
                   <Input
                     name='currentPassword'
+                    id='currentPassword'
                     type='password'
                     state={currentPasswordState}
                     onChange={handleChange}
@@ -86,6 +87,7 @@ export const ChangePassword: React.FC<{}> = () => {
                   <FormLabel htmlFor='password'>New Password</FormLabel>
                   <Input
                     name='password'
+                    id='password'
                     type='password'
                     state={passwordState}
                     onChange={handleChange}
@@ -104,6 +106,7 @@ export const ChangePassword: React.FC<{}> = () => {
                   </FormLabel>
                   <Input
                     name='confirmPassword'
+                    id='confirmPassword'
                     type='password'
                     state={confirmPasswordState}
                     onChange={handleChange}
