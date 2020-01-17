@@ -1,0 +1,13 @@
+hasura-graphql.tsx
+api-graphql.tsx
+
+# dependencies
+node_modules
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+/.next

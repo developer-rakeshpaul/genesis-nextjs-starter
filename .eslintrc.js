@@ -8,7 +8,12 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint/eslint-plugin', 'jest', 'react-hooks'],
+  plugins: [
+    '@typescript-eslint/eslint-plugin',
+    'jsx-a11y',
+    'jest',
+    'react-hooks',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',

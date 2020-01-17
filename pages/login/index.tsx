@@ -39,6 +39,7 @@ const Login: NextPage = () => {
               <Input
                 name='email'
                 type='email'
+                id='email'
                 state={emailState}
                 onChange={handleChange}
                 value={formik.values.email}
@@ -55,6 +56,7 @@ const Login: NextPage = () => {
               <Input
                 name='password'
                 type='password'
+                id='email'
                 state={passwordState}
                 onChange={handleChange}
                 value={formik.values.password}
